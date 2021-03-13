@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <style>
+
+        body,
+        svg {
+          height: 100%;
+          margin: 0;
+          width: 100%;
+          float: left;
+        }
+        div {width: 100%; height: 100%;z-index: -100; position: absolute; top: 0; left: 0;}
+    </style>       
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script type="text/javascript">
+        function drawFlower(svg, x, y, radius, hue) {
+
+            //Append circle 
+            svg.append("circle")
+                .attr("cx", x)
+                .attr("cy", y)
+                .attr("r", radius)
+                .attr("fill", "hsl(" + hue + ", 70%, 63%)")
+                .attr("fill-opacity", "0.15");                
+        }
+
+
+        const rad = 2.0 * Math.PI;
+        const hue_sin_add=rad / 100.0;
+        const hue_phase_add =rad / 150.0;
+        const size_sin_add=rad / 40.0;
+        const size_phase_add =rad / 100.0;
+        const circlex_sin_add=rad / 100.0
+        const circley_sin_add=rad / 50.0
+        const circlex_phase_add =rad / 150.0;
+        const circley_phase_add =rad / 200.0;
+
+        let size_sin = 0;
+        let circlex_sin = 0;
+        let circley_sin = rad / 200.0;
+        let hue_sin = rad / 180.0;
+        
+        function update() {
+                const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+                const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+  
+                const circlex_center=vw/2.0, circley_center=vh/2.0;
+
+                let svg = d3.select("#svgcontainer").html("").append("svg");
+                let hue_sin_current = hue_sin;
+                let size_sin_current = size_sin;
+                let x_sin_current = circlex_sin;
+                let y_sin_current = circley_sin;
+                for(var i = 0; i < 128; i++)
+                { 
+                    hue = (Math.sin(hue_sin_current) * 128.0) + 128.0; 
+                    radius = (Math.sin(size_sin_current) * 150.0) + 130.0; 
+                    circlex = (Math.sin(x_sin_current) * circlex_center) + circlex_center; 
+                    circley = (Math.sin(y_sin_current) * circley_center) + circley_center; 
+                    hue_sin_current += hue_sin_add;
+                    size_sin_current += size_sin_add;
+                    x_sin_current += circlex_sin_add;
+                    y_sin_current += circley_sin_add;
+                    drawFlower(svg, ((100.0*2.0)/10.0) + circlex , circley, radius, hue);
+                }  
+                hue_sin += hue_phase_add;  
+                size_sin += size_phase_add;  
+                circlex_sin += circlex_phase_add;
+                circley_sin += circley_phase_add;
+            }        
+
+        function create() {
+            //d3.select("body").append("h1").text("Insert a heading with D3");
+            // d3.select("body").transition().style("background-color", "black");
+
+            setInterval(update, 60)
+        }
+
+    </script>
+ </head>
+ <body onload="create();">
+    <h1>Circles</h1>
+    <div style="width: 100%; height:100%" id = "svgcontainer">
+    </div>
+
+ </body>   
+</html>
+
