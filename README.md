@@ -17,9 +17,27 @@ Steps [README.md](./01_basic_svg/README.md)
 Demonstrate how to build a sine scroller witrh d3 and svg
 Steps [README.md](./02_svg_sinetext/README.md)  
 
+## Example 3 - Plasma
+Demonstrate how to build a plasma in using gradients  
+Steps [README.md](./03_plasma/README.md)  
+
 
 https://observablehq.com/@daformat/svg-flowers  
 https://observablehq.com/@daformat/drawing-blobs-with-svg  
 https://observablehq.com/@mattdzugan/relaxagons-twitter-bot?collection=@mattdzugan/tilings  
 https://observablehq.com/@mattdzugan/dithering-on-non-square-pixels?collection=@mattdzugan/tilings  
+
+
+Starfield
+http://paperjs.org/examples/nyan-rainbow/
+
+https://betterprogramming.pub/fun-with-html-canvas-lets-create-a-star-field-a46b0fed5002
+
+
+Plasma
+https://bl.ocks.org/HarryStevens/7e733ac8ae4e8076c30c7b86cadcd346
+
+https://bl.ocks.org/HarryStevens
+
+https://developer.mozilla.org/en-US/docs/Web/CSS/linear-gradient()
 
