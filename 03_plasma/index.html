@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <!-- background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%),
+    linear-gradient(127deg, rgba(0,255,0,.8), rgba(0,255,0,0) 40.71%),
+    linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%); -->
+
+<style>
+        div.plasma {
+            background: linear-gradient(117deg, hsla(120,100%,50%,0.3), hsla(20,60%,70%,0.3) 70.71%);
+        }
+        body,
+        svg {
+          height: 100%;
+          margin: 0;
+          width: 100%;
+          float: left;
+        }
+        div {width: 100%; height: 100%;z-index: -100; position: absolute; top: 0; left: 0;}
+        path {
+            fill:none;
+      }
+    </style>       
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+ </head>
+ <body onload="javascript:create();">
+    <div id = "svgcontainer">
+        <div style="background: linear-gradient(117deg, hsla(190,70%,50%,1), hsla(20,60%,70%,0.3) 70.71%);" id="plasma"></div>
+    </div>
+
+    <script>
+        function create() {
+            setInterval(update, 60)
+        }
+
+        var deg1 = 0;
+        var deg2 = 50;
+        var deg3 = 80;
+        var hue1 = 0;
+        var hue2 = 130;
+        function update() {
+            const rad = 2.0 * Math.PI;
+
+            var plasma = d3.select("#plasma");
+            plasma.attr("style","background: linear-gradient(" + deg1 + "deg,  hsla(" + hue1 + ",70%,50%,1), hsla(" + hue2 + ",60%,70%,1) 70.71%),linear-gradient(" + deg2 + "deg, rgba(0,255,0,.8), rgba(0,255,0,0.6) 40.71%),linear-gradient(" + deg3 + "deg, rgba(0,0,255,.8), rgba(0,255,0,0.5) 90.71%);");
+            deg1 += 1.0;
+            deg2 += 3.0;
+            deg3 -= 2.0;
+            hue1 += 1.0;
+            hue2 += 2.1;
+        }
+        
+    </script>
+
+ </body>
+ </html>
+
