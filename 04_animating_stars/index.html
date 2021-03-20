@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+ <head>
+<style>
+        body,
+        svg {
+          height: 100%;
+          margin: 0;
+          width: 100%;
+          float: left;
+          background-color: rgb(72, 73, 134);
+          /*background-color: rgb(196, 197, 156);*/
+        }
+        .svgdiv {width: 100%; height: 100%;z-index: -100; position: absolute; top: 0; left: 0;}        
+        path {
+            fill:none;
+      }
+    </style>       
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+ </head>
+ <body onload="javascript:create();">
+    <div class="svgdiv" id = "svgcontainer">
+        <svg height="200" width="200" >
+           <!-- <g transform = "translate(400, 400) scale(0.5)" >
+            <polygon points="-50,-50, 50,-50, 50,50, -50,50" style="fill:rgb(255, 208, 0);stroke:rgb(255, 208, 0);stroke-width:5;fill-rule:nonzero;">
+              <animateTransform attributeName="transform" type="rotate" dur="7s" from="0" to="360" repeatCount="indefinite" />
+           </polygon>
+           </g>-->
+          </svg>
+       </div>
+     
+
+    <script>
+        function create() {
+            var svg = d3.select("#svgcontainer").html("").append("svg");
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+  
+            const rad = 2.0 * Math.PI;
+            const step = rad / 10.0;
+            var angle = 0;
+            var points = "" 
+            var radius = 40;
+            for (var i = 0; i< 4; i++) {
+                x = (Math.sin(angle) * -radius);
+                y = (Math.cos(angle) * radius);
+                points += x + "," + y + ","
+                angle += step;
+                x = (Math.sin(angle) * -(radius/2));
+                y = (Math.cos(angle) * (radius/2));
+                points += x + "," + y + ","
+                angle += step;                
+            }     
+            x = (Math.sin(angle) * -radius);
+            y = (Math.cos(angle) * radius);
+            points += x + "," + y + ","
+            angle += step;
+            x = (Math.sin(angle) * -(radius/2));
+            y = (Math.cos(angle) * (radius/2));
+            points += x + "," + y
+            angle += step;            
+
+
+            total_rows = Math.floor((vh / 150));
+            total_columns = Math.floor((vw / 150));
+            for(var row=0; row < total_rows; row++) {
+                for(var i=0; i < total_columns; i++) {
+                    var x = (Math.random() * (vw / (total_columns * 1.5))) + ((vw / total_columns) * i);
+                    var y = (Math.random() * (vw / (total_rows * 1.5))) + ((vw / total_rows) * row);
+                    var scale = Math.random() + 0.05;    
+                    var spintime = (Math.random() * 20) + 4;     
+                    var direction = ((Math.random() * 2) - 1);
+                    if(direction < 0) {
+                        direction = -360;
+                    } else {
+                        direction = 360;
+                    }     
+
+                    var hue = (Math.random() * 255);                             
+                    svg.append("g").attr("transform", "translate(" + x + ", " + y + ") scale("+ scale+")")
+                        .append("polygon")
+                        //.attr("points", "-50,-50, 50,-50, 50,50, -50,50")    
+                        .attr("points", points)    
+                        //.attr("style", "fill:hsl(" + hue + ", 80%, 60%);fill-rule:nonzero;")
+                        .attr("style", "fill:rgb(196, 197, 156);fill-rule:nonzero;")
+                        .append("animateTransform")
+                        .attr("attributeName", "transform")    
+                        .attr("type", "rotate")    
+                        .attr("dur", spintime + "s")    
+                        .attr("from", "0")    
+                        .attr("to", direction)    
+                        .attr("repeatCount", "indefinite");    
+                }
+            }
+            setInterval(update, 60)
+        }
+
+        function update() {
+        }
+        
+    </script>
+
+ </body>
+ </html>
+
