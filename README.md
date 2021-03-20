@@ -21,6 +21,12 @@ Steps [README.md](./02_svg_sinetext/README.md)
 Demonstrate how to build a plasma in using gradients  
 Steps [README.md](./03_plasma/README.md)  
 
+## Example 4 - Animating Stars
+Demonstrate how to create some SVG objects  
+Steps [README.md](./04_animating_stars/README.md)  
+
+
+
 
 https://observablehq.com/@daformat/svg-flowers  
 https://observablehq.com/@daformat/drawing-blobs-with-svg  
