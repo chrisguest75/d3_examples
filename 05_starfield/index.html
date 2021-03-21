@@ -53,18 +53,32 @@
   </div>
 
     <div class="svgdiv" id = "svgcontainer">
-        <svg height="200" width="200" >
-           <!-- <g transform = "translate(400, 400) scale(0.5)" >
+
+
+        <!-- <svg height="200" width="200" >
+           <g transform = "translate(0, 400) scale(1.0)" >
             <polygon points="-50,-50, 50,-50, 50,50, -50,50" style="fill:rgb(255, 208, 0);stroke:rgb(255, 208, 0);stroke-width:5;fill-rule:nonzero;">
-              <animateTransform attributeName="transform" type="rotate" dur="7s" from="0" to="360" repeatCount="indefinite" />
+              <animateTransform attributeName="transform"
+              type="translate"
+              from="0 400"
+              to="800 400"
+              begin="0s"
+              dur="10s"
+              repeatCount="indefinite"
+              
+            />
+              <animateTransform attributeName="transform" type="rotate" dur="7s" from="0" to="360" repeatCount="indefinite" additive="sum"/>
+
+          
            </polygon>
-           </g>-->
-          </svg>
+           </g>
+          </svg> -->
        </div>
      
 
     <script>
         function create() {
+
             var svg = d3.select("#svgcontainer").html("").append("svg");
             const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
             const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
@@ -98,8 +112,8 @@
               points_array.push(points);
             }
 
-            total_rows = Math.floor((vh / 150));
-            total_columns = Math.floor((vw / 150));
+            total_rows = Math.floor((vh / 50));
+            total_columns = Math.floor((vw / 50));
             for(var row=0; row < total_rows; row++) {
                 for(var i=0; i < total_columns; i++) {
                     var x = (Math.random() * (vw / (total_columns * 1.5))) + ((vw / total_columns) * i);
@@ -113,21 +127,34 @@
                         direction = 360;
                     }     
 
-                    var hue = (Math.random() * 255);                             
-                    svg.append("g").attr("transform", "translate(" + x + ", " + y + ") scale("+ scale+")")
+                    var hue = (Math.random() * 255); 
+                    //scale = 1.0;
+                    scale_multiply = 1.0 / scale;     
+                    spintime = 20;                       
+                    var poly = svg.append("g").attr("transform", "translate(" + 0 + ", " + y + ") scale("+ scale+")")
                         .append("polygon")
                         //.attr("points", "-50,-50, 50,-50, 50,50, -50,50")    
                         .attr("points", points_array[Math.floor(Math.random() * points_array.length)])    
                         //.attr("style", "fill:hsl(" + hue + ", 80%, 60%);fill-rule:nonzero;")
                         .attr("style", "fill:rgb(196, 197, 156);fill-rule:nonzero;")
-                        .append("animateTransform")
+
+                    poly.append("animateTransform")
                         .attr("attributeName", "transform")    
-                        .attr("type", "rotate")    
-                        .attr("dur", spintime + "s")    
-                        .attr("from", "0")    
-                        .attr("to", direction)    
+                        .attr("type", "translate")    
+                        .attr("dur", (spintime * scale_multiply) + "s")    
+                        .attr("from", -x + " " + y)    
+                        .attr("to", ((x + vw + 100) * scale_multiply) + " " + y)    
                         .attr("repeatCount", "indefinite");    
-                }
+                    poly.append("animateTransform")
+                        .attr("attributeName", "transform")    
+                        .attr("type", "rotate") 
+                        .attr("dur", (spintime * scale_multiply) + "s")    
+                        .attr("from", "0")    
+                        .attr("to", direction) 
+                        .attr("additive", "sum")    
+                        .attr("repeatCount", "indefinite");    
+
+                      }
             }
             setInterval(update, 60)
         }
