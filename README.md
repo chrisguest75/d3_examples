@@ -25,8 +25,8 @@ Steps [README.md](./03_plasma/README.md)
 Demonstrate how to create some SVG objects  
 Steps [README.md](./04_animating_stars/README.md)  
 
-## Example 4 - Animating Stars
-Demonstrate how to create a starfield effect
+## Example 5 - Horizontal Starfield
+Demonstrate how to create a horizontal starfield effect
 Steps [README.md](./05_starfield/README.md)  
 
 
