@@ -1,14 +1,10 @@
 # README
 Demonstrate how to build a 3d globe using typescript and d3
 
-TODO: 
-* not loading the parceled file
-* onload calling the create function
-
 ## Run it
 ```sh
 npm install
-open ./index.html
+npm run start:browser
 ```
 
 ## How it was built
