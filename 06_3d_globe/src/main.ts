@@ -13,9 +13,11 @@ class Point {
   
   }
 
-const points_per_circle = 20.0;
+const points_per_circle = 15.0;
+const rows_per_globe = 10.0;
 const radians = 2.0 * Math.PI;
 const circle_radians = radians / points_per_circle;
+const rows_radians = (radians /2.0) / rows_per_globe;
 let rotation_x = 0.0;
 let rotation_y = 0.0;
 let rotation_z = 0.0;
@@ -29,16 +31,23 @@ const rotation_zadd = radians / 200.0;
 let points: Array<Point> = new Array<Point>();
 
 function create() {
-    d3.select("body").append("h1").text("Insert a heading with D3");
+    //d3.select("body").append("h1").text("Insert a heading with D3");
 
-    for(let i = 0; i < points_per_circle; i++) {
-        let ang = circle_radians * i; 
-        let point_x = 0.0;
-        let point_y = 300.0;
-        let x = (point_x * Math.cos(ang)) - (point_y * Math.sin(ang));
-        let y = (point_x * Math.sin(ang)) + (point_y * Math.cos(ang));
-        let z = 20.0;
-        points.push(new Point(x, y, z));    
+    for(let k = 0; k < rows_per_globe; k++) {
+
+        let amplitude_y = Math.sin(rows_radians * k) * 300.0
+        //let amplitude_y = 400.0
+        let z_depth = (k - (rows_per_globe / 2.0)) * 30.0;
+
+        for(let i = 0; i < points_per_circle; i++) {
+            let ang = (circle_radians * i); 
+            let point_x = 0.0;
+            let point_y = amplitude_y;
+            let x = (point_x * Math.cos(ang)) - (point_y * Math.sin(ang));
+            let y = (point_x * Math.sin(ang)) + (point_y * Math.cos(ang));
+            let z = z_depth;
+            points.push(new Point(x, y, z));    
+        }
     }
 
     setInterval(update, 60)
@@ -84,7 +93,7 @@ function update() {
         svg.append("circle")
         .attr("cx", x + center_x)
         .attr("cy", y + center_y)
-        .attr("r", (z + 350.0) / 20.0)
+        .attr("r", (z + 350.0) / 30.0)
         .attr("fill", "hsl(" + 50 + ", 70%, 63%)")
         .attr("fill-opacity", "0.50");           
     }
