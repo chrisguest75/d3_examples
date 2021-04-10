@@ -4,20 +4,18 @@ class Point {
     x: number;
     y: number;
     z: number;  
+    hue: number; 
   
-    constructor(x: number, y: number, z: number) {
+    constructor(x: number, y: number, z: number, hue: number) {
       this.x = x;
       this.y = y;
       this.z = z;
+      this.hue = hue;
     }
   
   }
 
-const points_per_circle = 15.0;
-const rows_per_globe = 10.0;
 const radians = 2.0 * Math.PI;
-const circle_radians = radians / points_per_circle;
-const rows_radians = (radians /2.0) / rows_per_globe;
 let rotation_x = 0.0;
 let rotation_y = 0.0;
 let rotation_z = 0.0;
@@ -33,20 +31,28 @@ let points: Array<Point> = new Array<Point>();
 function create() {
     //d3.select("body").append("h1").text("Insert a heading with D3");
 
-    for(let k = 0; k < rows_per_globe; k++) {
+    const points_per_circle = 15.0;
+    const rows_per_globe = 15.0;
+    const rows_radians = (radians /2.0) / rows_per_globe;
+    for(let k = 1; k < rows_per_globe; k++) {
+        let ang = (rows_radians * k); 
 
-        let amplitude_y = Math.sin(rows_radians * k) * 300.0
-        //let amplitude_y = 400.0
-        let z_depth = (k - (rows_per_globe / 2.0)) * 30.0;
+        let point_x = 0.0;
+        let point_y = 300.0;
+        let y_depth = (point_x * Math.cos(ang)) - (point_y * Math.sin(ang));
+        let z_depth = (point_x * Math.sin(ang)) + (point_y * Math.cos(ang));
 
+        //let amplitude_y = Math.sin(rows_radians * k) * 300.0
+        //let z_depth = (k - (rows_per_globe / 2.0)) * 30.0;
+        const circle_radians = radians / points_per_circle;
         for(let i = 0; i < points_per_circle; i++) {
-            let ang = (circle_radians * i); 
+            let ang = (circle_radians * i) + ((circle_radians / rows_per_globe) * k * 4); 
             let point_x = 0.0;
-            let point_y = amplitude_y;
+            let point_y = y_depth;
             let x = (point_x * Math.cos(ang)) - (point_y * Math.sin(ang));
             let y = (point_x * Math.sin(ang)) + (point_y * Math.cos(ang));
             let z = z_depth;
-            points.push(new Point(x, y, z));    
+            points.push(new Point(x, y, z, z));    
         }
     }
 
@@ -94,7 +100,7 @@ function update() {
         .attr("cx", x + center_x)
         .attr("cy", y + center_y)
         .attr("r", (z + 350.0) / 30.0)
-        .attr("fill", "hsl(" + 50 + ", 70%, 63%)")
+        .attr("fill", "hsl(" + point.hue + ", 70%, 63%)")
         .attr("fill-opacity", "0.50");           
     }
 
