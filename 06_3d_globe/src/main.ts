@@ -34,10 +34,10 @@ function create() {
     for(let i = 0; i < points_per_circle; i++) {
         let ang = circle_radians * i; 
         let point_x = 0.0;
-        let point_y = 200.0;
+        let point_y = 300.0;
         let x = (point_x * Math.cos(ang)) - (point_y * Math.sin(ang));
         let y = (point_x * Math.sin(ang)) + (point_y * Math.cos(ang));
-        let z = 10;
+        let z = 20.0;
         points.push(new Point(x, y, z));    
     }
 
@@ -84,9 +84,9 @@ function update() {
         svg.append("circle")
         .attr("cx", x + center_x)
         .attr("cy", y + center_y)
-        .attr("r", 10)
+        .attr("r", (z + 350.0) / 20.0)
         .attr("fill", "hsl(" + 50 + ", 70%, 63%)")
-        .attr("fill-opacity", "1.00");           
+        .attr("fill-opacity", "0.50");           
     }
 
     rotation_x += rotation_xadd;
