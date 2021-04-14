@@ -19,9 +19,9 @@ const radians = 2.0 * Math.PI;
 let rotation_x = 0.0;
 let rotation_y = 0.0;
 let rotation_z = 0.0;
-const rotation_xadd = radians / 200.0;
-const rotation_yadd = radians / 200.0;
-const rotation_zadd = radians / 200.0;
+const rotation_xadd = radians / 2500.0;
+const rotation_yadd = radians / 2200.0;
+const rotation_zadd = radians / 2600.0;
 //const rotation_xadd = 0.0;
 //const rotation_yadd = 0.0;
 //const rotation_zadd = 0.0;
@@ -31,29 +31,13 @@ let points: Array<Point> = new Array<Point>();
 function create() {
     //d3.select("body").append("h1").text("Insert a heading with D3");
 
-    const points_per_circle = 15.0;
-    const rows_per_globe = 15.0;
-    const rows_radians = (radians /2.0) / rows_per_globe;
-    for(let k = 1; k < rows_per_globe; k++) {
-        let ang = (rows_radians * k); 
-
-        let point_x = 0.0;
-        let point_y = 300.0;
-        let y_depth = (point_x * Math.cos(ang)) - (point_y * Math.sin(ang));
-        let z_depth = (point_x * Math.sin(ang)) + (point_y * Math.cos(ang));
-
-        //let amplitude_y = Math.sin(rows_radians * k) * 300.0
-        //let z_depth = (k - (rows_per_globe / 2.0)) * 30.0;
-        const circle_radians = radians / points_per_circle;
-        for(let i = 0; i < points_per_circle; i++) {
-            let ang = (circle_radians * i) + ((circle_radians / rows_per_globe) * k * 4); 
-            let point_x = 0.0;
-            let point_y = y_depth;
-            let x = (point_x * Math.cos(ang)) - (point_y * Math.sin(ang));
-            let y = (point_x * Math.sin(ang)) + (point_y * Math.cos(ang));
-            let z = z_depth;
-            points.push(new Point(x, y, z, z));    
-        }
+    const stars = 2000.0;
+    const box_size = 2000.0;
+    for(let i = 0; i < stars; i++) {
+        let x = (Math.random() * box_size) - (box_size / 2);
+        let y = (Math.random() * box_size) - (box_size / 2);
+        let z = (Math.random() * box_size) - (box_size / 2);
+        points.push(new Point(x, y, z, 250));    
     }
 
     setInterval(update, 60)
@@ -94,14 +78,27 @@ function update() {
 
         x = newx
         y = newy
-        z = newz
+        z = newz       
 
-        svg.append("circle")
-        .attr("cx", x + center_x)
-        .attr("cy", y + center_y)
-        .attr("r", (z + 350.0) / 30.0)
-        .attr("fill", "hsl(" + point.hue + ", 70%, 63%)")
-        .attr("fill-opacity", "0.50");           
+        // calculate opacity and radius
+        var opacity = 1.0;
+        var pz = 1000/z;
+        if (pz > 10.0) {
+            opacity -= (pz / 100.0);
+            if (opacity <= 0.0) {
+                pz = -1.0;
+            } else {
+                pz = 10.0
+            }
+        }
+        if (z >= 0.0) {
+            svg.append("circle")
+            .attr("cx", x + center_x)
+            .attr("cy", y + center_y)
+            .attr("r", pz) 
+            .attr("fill", "hsl(" + point.hue + ", 70%, 63%)")
+            .attr("fill-opacity", opacity);                           
+        }
     }
 
     rotation_x += rotation_xadd;
