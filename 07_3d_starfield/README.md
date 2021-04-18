@@ -1,5 +1,5 @@
 # README
-Demonstrate how to build a 3d globe using typescript and d3
+Demonstrate how to build a 3d starfield using typescript and d3
 
 ## Run it
 ```sh
