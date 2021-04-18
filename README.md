@@ -32,6 +32,13 @@ Steps [README.md](./05_starfield/README.md)
 Demonstrate how to create a 3d globe with typescript  
 Steps [README.md](./06_3d_globe/README.md)  
 
+## Example 7 - 3d starfield
+Demonstrate how to build a 3d starfield using typescript and d3  
+Steps [README.md](./07_3d_starfield/README.md)  
+
+## Example 8 - css sprites
+Demonstrate how to use css sprites  
+Steps [README.md](./08_sprites/README.md)  
 ## Extra resources
 
 ### D3
