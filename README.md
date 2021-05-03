@@ -28,9 +28,14 @@ Steps [README.md](./04_animating_stars/README.md)
 Demonstrate how to create a horizontal starfield effect  
 Steps [README.md](./05_starfield/README.md)  
 
-## Example 6 - 3d globe with typescript
 Demonstrate how to create a 3d globe with typescript  
 Steps [README.md](./06_3d_globe/README.md)  
+
+
+## Example 9 - Sine Background
+Demonstrate an example of painting canvas images line by line.
+Steps [README.md](./09_sine_logo/README.md)  
+
 
 ## Extra resources
 
