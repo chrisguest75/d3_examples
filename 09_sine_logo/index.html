@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <style>
+
+        body, canvas {
+          height: 100%;
+          margin: 0;
+          width: 100%;
+          float: left;
+          background-color: black;
+        }
+    </style>       
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script type="text/javascript">
+
+        const rad = 2.0 * Math.PI;
+        const y1_phase_add =rad / 100.0;
+        const y1_sin_add=rad / 160.0
+        let y1_sin = 0;
+        const y2_phase_add =rad / 280.0;
+        const y2_sin_add=rad / 120.0
+        let y2_sin = rad/3.0;
+
+
+        const x1_phase_add =rad / 75.0;
+        const x2_phase_add =rad / 75.0;
+        const x1_sin_add=rad / 60.0
+        const x2_sin_add=rad / 180.0
+        let x1_sin = 0;
+        let x2_sin = rad/4.0;
+        
+        function update() {
+                const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+                const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
+                var sourceimage = document.querySelector('#logo1');
+                var canvas = document.querySelector('#canvas_container');
+                
+                canvas.width = vw;
+                canvas.height = vh;
+                var context = canvas.getContext('2d');
+
+                var width = sourceimage.width;
+                var height = sourceimage.height;
+
+                let y1_sin_current = y1_sin;
+                let y2_sin_current = y2_sin;
+
+                let x1_sin_current = x1_sin;
+                let x2_sin_current = x2_sin;
+
+                y = 0
+
+                clip = vh;
+                for (var i = 1; (y < height) && (i < vh) && (i < clip); i++) {
+                    y1_add = (Math.sin(y1_sin_current)) * 3.5; 
+                    y2_add = (Math.sin(y2_sin_current)) * 10.5; 
+                    //y += ((Math.abs(y1_add) + Math.abs(y2_add)) / 3.0);    
+                    y += (y1_add + Math.abs(y2_add)) / 12.0;    
+                    //y += y_add;
+                    ypos = y;    
+                    if (ypos <= 0.0) { 
+                        ypos = 0;
+                    }
+                    const x1_scale = 6.0;
+                    const x2_scale = 14.0;
+
+                    x = (Math.sin(x1_sin_current) * x1_scale);
+                    x = (Math.sin(x2_sin_current) * x2_scale) + x; 
+                    xstart = x - (x1_scale + x2_scale);        
+
+                    context.drawImage(sourceimage,0,ypos,width, 1, xstart,i,canvas.width - x + (x1_scale+ x2_scale),1);
+                    y1_sin_current += y1_sin_add;
+                    y2_sin_current += y2_sin_add;
+
+                    x1_sin_current += x1_sin_add;
+                    x2_sin_current += x2_sin_add;
+
+                }
+                y1_sin += y1_phase_add;
+                y2_sin += y2_phase_add;
+
+                x1_sin += x1_phase_add;
+                x2_sin += x2_phase_add;
+            }        
+
+        function create() {
+            setInterval(update, 60)
+            //update()
+        }
+
+    </script>
+ </head>
+ <body onload="create();">
+    <!-- <h1>Sine Logo</h1> -->
+    <canvas id="canvas_container" width="100%" height="100%"></canvas>
+
+    <img id="logo1" src="img/background.jpg" style="visibility: hidden;" alt="">
+    <img id="logo2" src="img/logo.png" style="visibility: hidden;" alt="">
+
+ </body>   
+</html>
+
