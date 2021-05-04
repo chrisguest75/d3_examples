@@ -12,6 +12,29 @@
     </style>       
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script type="text/javascript">
+        // var keyEnum = { W_Key:0, A_Key:1, S_Key:2, D_Key:3 };
+        // var keyArray = new Array(4);
+
+        // function onKeyDown()
+        // {
+        //     // Detect which key was pressed
+        //     if( key == 'w' )
+        //         keyArray[keyEnum.W_Key] = true;
+        //     // Repeat for each key you care about...
+        // }
+
+        // function onKeyUp()
+        // {
+        //     // Detect which key was released
+        //     if( key == 'w' )
+        //         keyArray[keyEnum.W_Key] = false;
+        //     // Repeat for each key you care about...
+        // }
+
+        // function isKeyDown(key)
+        // {
+        //     return keyArray[key];
+        // }
 
         function generate_lines() {
             const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
@@ -32,7 +55,11 @@
             for (var i = 0; i < (lines * 2); i+=2){
                 let x1 = i * boxwidth;
                 let x2 = (i + 1) * boxwidth;
-                line0_coords.push([x1 - (line0_width /2 ) - (boxwidth / 2), x2 - (line0_width / 2 ) - (boxwidth / 2)])                
+                let x3 = (i + 2) * boxwidth;
+                line0_coords.push([x1 - (line0_width /2 ) - (boxwidth / 2), 
+                                    x2 - (line0_width / 2 ) - (boxwidth / 2),
+                                    x3 - (line0_width / 2 ) - (boxwidth / 2)
+                                ])                
             }
             const line1_width = width * 15;
             let line1_coords = [];
@@ -40,18 +67,36 @@
             for (var i = 0; i < (lines * 2); i+=2){
                 let x1 = i * boxwidth;
                 let x2 = (i + 1) * boxwidth;
-                line1_coords.push([x1 - (line1_width /2 )  - (boxwidth / 2), x2- (line1_width /2 ) - (boxwidth / 2)])                 
+                let x3 = (i + 3) * boxwidth;
+                line1_coords.push([x1 - (line1_width /2 ) - (boxwidth / 2), 
+                                    x2 - (line1_width / 2 ) - (boxwidth / 2),
+                                    x3 - (line1_width / 2 ) - (boxwidth / 2)
+                                ])                
             }
 
             // Create a linear gradient
-            var gradient = ctx.createLinearGradient(0, 0, width,height);
+            var gradient1 = ctx.createLinearGradient(0, 0, width,height);
 
             /*gradient.addColorStop(0, 'black');
             gradient.addColorStop(1, 'white');*/
 
-            gradient.addColorStop(0, 'hsla(190,70%,50%,0.3)');
+            /*gradient.addColorStop(0, 'hsla(190,70%,50%,0.3)');
             gradient.addColorStop(.5, 'hsla(90,60%,70%,5.0)');
-            gradient.addColorStop(1, 'hsla(60,60%,70%,5.3)');
+            gradient.addColorStop(1, 'hsla(60,60%,70%,5.3)');*/
+
+            gradient1.addColorStop(0, 'purple');
+            gradient1.addColorStop(.10, 'blue');
+            //gradient.addColorStop(.5, 'yellow');
+            gradient1.addColorStop(.90, 'red');
+            gradient1.addColorStop(1, 'yellow');
+
+            var gradient2 = ctx.createLinearGradient(0, 0, width,height);
+
+            gradient2.addColorStop(0, 'purple');
+            gradient2.addColorStop(.10, 'darkblue');
+            gradient2.addColorStop(.90, 'darkred');
+            gradient2.addColorStop(1, 'yellow');
+
 
             for (var i = 0; i < line0_coords.length; i++){
                 ctx.fillStyle = '#ffffff';
@@ -63,17 +108,25 @@
                 ctx.lineTo(line1[1] + (width /2), height);
                 ctx.lineTo(line0[1] + (width /2), 0);
                 ctx.closePath();
-                ctx.fillStyle = gradient;                
+                ctx.fillStyle = gradient1;                
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(line0[1] + (width /2), 0);
+                ctx.lineTo(line1[1] + (width /2), height);
+                ctx.lineTo(line1[2] + (width /2), height);
+                ctx.lineTo(line0[2] + (width /2), 0);
+                ctx.closePath();
+                ctx.fillStyle = gradient2;                
                 ctx.fill();
             }
         }        
 
         const rad = 2.0 * Math.PI;
         const y1_phase_add =rad / 140.0;
-        const y1_sin_add=rad / 1600.0
+        const y1_sin_add=rad / 2600.0
         let y1_sin = 0;
         const y2_phase_add =rad / 1280.0;
-        const y2_sin_add=rad / 500.0
+        const y2_sin_add=rad / 1500.0
         let y2_sin = rad/3.0;
         
         function update() {
@@ -108,8 +161,8 @@
         }        
 
         function create() {
-            //setInterval(update, 60)
-            setInterval(generate_lines, 60)
+            setInterval(update, 60)
+            //setInterval(generate_lines, 60)
         }
 
     </script>
