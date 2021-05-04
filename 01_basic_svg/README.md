@@ -1,5 +1,5 @@
 # README
-Demonstrate an example DOM with SVG
+Demonstrate an example DOM manipulation with SVG.  
 
 ```sh
 open ./index.html

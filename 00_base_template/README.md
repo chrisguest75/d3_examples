@@ -5,6 +5,15 @@ Use this to create new examples
 open ./index.html
 ```
 
+## D3 Notes
 
-## Notes
+```js
+// Selection by Tag
+d3.select("div")
 
+// Selection by Class name
+d3.select(".<class name>")
+
+// Selection by ID
+d3.select("#<id of an element>")
+```

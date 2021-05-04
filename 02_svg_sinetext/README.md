@@ -1,10 +1,9 @@
 # README
-Demonstrate how to build a sine scroller witrh d3 and svg
+Demonstrate how to build a sine scroller with D3 and SVG
 
 ```sh
 open ./index.html
 ```
-
 
 ## Notes
 

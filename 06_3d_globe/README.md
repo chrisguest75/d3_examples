@@ -4,6 +4,7 @@ Demonstrate how to build a 3d globe using typescript and d3
 ## Run it
 ```sh
 npm install
+npm run start
 npm run start:browser
 ```
 

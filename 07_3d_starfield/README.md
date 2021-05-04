@@ -1,9 +1,10 @@
 # README
-Demonstrate how to build a 3d starfield using typescript and d3
+Demonstrate how to build a 3d starfield using typescript and D3
 
 ## Run it
 ```sh
 npm install
+npm run start
 npm run start:browser
 ```
 
