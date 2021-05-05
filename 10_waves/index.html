@@ -12,29 +12,24 @@
     </style>       
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script type="text/javascript">
-        // var keyEnum = { W_Key:0, A_Key:1, S_Key:2, D_Key:3 };
-        // var keyArray = new Array(4);
+        var keyEnum = { G_Key:0};
+        var keyArray = new Array(1);
 
-        // function onKeyDown()
-        // {
-        //     // Detect which key was pressed
-        //     if( key == 'w' )
-        //         keyArray[keyEnum.W_Key] = true;
-        //     // Repeat for each key you care about...
-        // }
+        function onKeyDown(evt) {
+            if( evt.key == 'g' ) {
+                keyArray[keyEnum.G_Key] = true;
+            }
+        }
 
-        // function onKeyUp()
-        // {
-        //     // Detect which key was released
-        //     if( key == 'w' )
-        //         keyArray[keyEnum.W_Key] = false;
-        //     // Repeat for each key you care about...
-        // }
+        function onKeyUp(evt) {
+            if( evt.key == 'g' ) {
+                keyArray[keyEnum.G_Key] = false;
+            }
+        }
 
-        // function isKeyDown(key)
-        // {
-        //     return keyArray[key];
-        // }
+        function isKeyDown(key) {
+            return keyArray[key];
+        }
 
         function generate_lines() {
             const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
@@ -87,15 +82,15 @@
             gradient1.addColorStop(0, 'purple');
             gradient1.addColorStop(.10, 'blue');
             //gradient.addColorStop(.5, 'yellow');
-            gradient1.addColorStop(.90, 'red');
+            gradient1.addColorStop(.80, 'red');
             gradient1.addColorStop(1, 'yellow');
 
             var gradient2 = ctx.createLinearGradient(0, 0, width,height);
 
             gradient2.addColorStop(0, 'purple');
             gradient2.addColorStop(.10, 'darkblue');
-            gradient2.addColorStop(.90, 'darkred');
-            gradient2.addColorStop(1, 'yellow');
+            gradient2.addColorStop(.80, 'darkred');
+            gradient2.addColorStop(1, 'orange');
 
 
             for (var i = 0; i < line0_coords.length; i++){
@@ -122,8 +117,8 @@
         }        
 
         const rad = 2.0 * Math.PI;
-        const y1_phase_add =rad / 140.0;
-        const y1_sin_add=rad / 2600.0
+        const y1_phase_add =rad / 340.0;
+        const y1_sin_add=rad / 4600.0
         let y1_sin = 0;
         const y2_phase_add =rad / 1280.0;
         const y2_sin_add=rad / 1500.0
@@ -160,9 +155,18 @@
             //y2_sin += y2_phase_add;
         }        
 
+        function screen_handler() {
+            if (isKeyDown(keyEnum.G_Key)) {
+                generate_lines();
+            } else {
+                update();
+            }
+        }
+
         function create() {
-            setInterval(update, 60)
-            //setInterval(generate_lines, 60)
+            document.addEventListener('keyup', onKeyUp);
+            document.addEventListener('keydown', onKeyDown);
+            setInterval(screen_handler, 60)
         }
 
     </script>
