@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <style>
+
+        body,
+        svg {
+          height: 100%;
+          margin: 0;
+          width: 100%;
+          float: left;
+            background-color: powderblue;
+        }
+        div {width: 100%; height: 100%;z-index: -100; position: absolute; top: 0; left: 0;}
+        h1 {
+            font-family: sans-serif;
+            color: white;
+        }
+        #textoverlay {
+            position: fixed; /* Sit on top of the page content */
+            width: 60%; /* Full width (cover the whole page) */
+            height: 60%; /* Full height (cover the whole page) */
+            top: 20%;
+            left: 20%;
+            background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+            z-index: 2; 
+
+            border-radius: 25px;
+            border: 3px solid rgba(128,128,128,0.5);
+            overflow: hidden;
+            margin: 0;    
+        }        
+    </style>       
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script>
+        var counter = 0;
+        function update() {
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+  
+            let title = d3.select("#title").html("Template " + counter);
+            counter++;
+        }
+        function screen_handler() {
+            update();
+        }
+
+        function create() {
+            setInterval(screen_handler, 60)
+        }
+    </script>
+</head>
+<body onload="create();">
+    <div id="container">
+        <canvas id="canvas"></canvas>
+        <div id="textoverlay">
+            <h1 id="title">Template</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id ex augue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean nec sem rhoncus, mollis velit a, porta libero. Praesent lobortis dui sed sem vulputate iaculis. Fusce nisl lectus, sollicitudin vitae mattis et, congue scelerisque odio. Vivamus sodales cursus lectus, sed accumsan felis gravida non. Sed ac nunc malesuada, viverra turpis id, elementum enim. Cras porta, sapien in vehicula pulvinar, risus justo vulputate tortor, sit amet sollicitudin sem libero ac ipsum. Sed aliquet dui finibus, dignissim sapien in, auctor libero. Curabitur id posuere velit. Vestibulum eget purus sapien. Nullam pretium tortor a nisi lobortis, ac tempus ex aliquam. Suspendisse lectus sapien, mollis a porttitor id, hendrerit ac eros. Duis egestas et ante nec pharetra. Vivamus lobortis dapibus erat sit amet aliquam. Morbi sit amet diam lobortis, egestas neque in, dignissim odio.</p>
+            
+        </div>
+    </div>   
+
+ </body>   
+</html>
+
