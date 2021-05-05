@@ -18,10 +18,26 @@
         }
     </style>       
     <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script>
+        var counter = 0;
+        function update() {
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+  
+            let title = d3.select("#title").html("Template " + counter);
+            counter++;
+        }
+        function screen_handler() {
+            update();
+        }
 
- </head>
- <body onload="">
-    <h1>Template</h1>
+        function create() {
+            setInterval(screen_handler, 60)
+        }
+    </script>
+</head>
+<body onload="create();">
+    <h1 id="title">Template</h1>
     <div style="width: 100%; height:100%" id = "svgcontainer">
     </div>
 
