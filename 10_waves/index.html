@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <style>
+        body, canvas {
+          height: 100%;
+          margin: 0;
+          width: 100%;
+          float: left;
+          background-color: black;
+        }
+    </style>       
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script type="text/javascript">
+        var keyEnum = { G_Key:0};
+        var keyArray = new Array(1);
+
+        function onKeyDown(evt) {
+            if( evt.key == 'g' ) {
+                keyArray[keyEnum.G_Key] = true;
+            }
+        }
+
+        function onKeyUp(evt) {
+            if( evt.key == 'g' ) {
+                keyArray[keyEnum.G_Key] = false;
+            }
+        }
+
+        function isKeyDown(key) {
+            return keyArray[key];
+        }
+
+        function generate_lines() {
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
+            let canvas = document.querySelector('#canvas_container');
+            const lines = 100;
+            const width = vw;
+            const height = 3000;
+            canvas.width = width;
+            canvas.height = height;
+            let ctx = canvas.getContext('2d');
+
+            const line0_width = width;
+            let line0_coords = [];
+            let linex = 0;
+            let boxwidth = line0_width / lines;
+            for (var i = 0; i < (lines * 2); i+=2){
+                let x1 = i * boxwidth;
+                let x2 = (i + 1) * boxwidth;
+                let x3 = (i + 2) * boxwidth;
+                line0_coords.push([x1 - (line0_width /2 ) - (boxwidth / 2), 
+                                    x2 - (line0_width / 2 ) - (boxwidth / 2),
+                                    x3 - (line0_width / 2 ) - (boxwidth / 2)
+                                ])                
+            }
+            const line1_width = width * 15;
+            let line1_coords = [];
+            boxwidth = line1_width / lines;
+            for (var i = 0; i < (lines * 2); i+=2){
+                let x1 = i * boxwidth;
+                let x2 = (i + 1) * boxwidth;
+                let x3 = (i + 3) * boxwidth;
+                line1_coords.push([x1 - (line1_width /2 ) - (boxwidth / 2), 
+                                    x2 - (line1_width / 2 ) - (boxwidth / 2),
+                                    x3 - (line1_width / 2 ) - (boxwidth / 2)
+                                ])                
+            }
+
+            // Create a linear gradient
+            var gradient1 = ctx.createLinearGradient(0, 0, width,height);
+
+            /*gradient.addColorStop(0, 'black');
+            gradient.addColorStop(1, 'white');*/
+
+            /*gradient.addColorStop(0, 'hsla(190,70%,50%,0.3)');
+            gradient.addColorStop(.5, 'hsla(90,60%,70%,5.0)');
+            gradient.addColorStop(1, 'hsla(60,60%,70%,5.3)');*/
+
+            gradient1.addColorStop(0, 'purple');
+            gradient1.addColorStop(.10, 'blue');
+            //gradient.addColorStop(.5, 'yellow');
+            gradient1.addColorStop(.80, 'red');
+            gradient1.addColorStop(1, 'yellow');
+
+            var gradient2 = ctx.createLinearGradient(0, 0, width,height);
+
+            gradient2.addColorStop(0, 'purple');
+            gradient2.addColorStop(.10, 'darkblue');
+            gradient2.addColorStop(.80, 'darkred');
+            gradient2.addColorStop(1, 'orange');
+
+
+            for (var i = 0; i < line0_coords.length; i++){
+                ctx.fillStyle = '#ffffff';
+                line0 = line0_coords[i];
+                line1 = line1_coords[i];
+                ctx.beginPath();
+                ctx.moveTo(line0[0] + (width /2), 0);
+                ctx.lineTo(line1[0] + (width /2), height);
+                ctx.lineTo(line1[1] + (width /2), height);
+                ctx.lineTo(line0[1] + (width /2), 0);
+                ctx.closePath();
+                ctx.fillStyle = gradient1;                
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(line0[1] + (width /2), 0);
+                ctx.lineTo(line1[1] + (width /2), height);
+                ctx.lineTo(line1[2] + (width /2), height);
+                ctx.lineTo(line0[2] + (width /2), 0);
+                ctx.closePath();
+                ctx.fillStyle = gradient2;                
+                ctx.fill();
+            }
+        }        
+
+        const rad = 2.0 * Math.PI;
+        const y1_phase_add =rad / 340.0;
+        const y1_sin_add=rad / 4600.0
+        let y1_sin = 0;
+        const y2_phase_add =rad / 1280.0;
+        const y2_sin_add=rad / 1500.0
+        let y2_sin = rad/3.0;
+        
+        function update() {
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
+            let sourceimage = document.querySelector('#logo1');
+            let canvas = document.querySelector('#canvas_container');
+            
+            canvas.width = vw;
+            canvas.height = vh;
+            let context = canvas.getContext('2d');
+
+            let width = sourceimage.width;
+            let height = sourceimage.height;
+
+            let y1_sin_current = y1_sin;
+            let y2_sin_current = y2_sin;
+            //y2_sin_current += y2_sin_add;
+
+            clip = vh;
+            for (var i = 1; (i < vh) && (i < clip); i++) {
+                let sin = ((Math.sin(y2_sin_current) * Math.sin(y1_sin_current)) * (height / 2)) + ((height /2) - 1);
+                let y = Math.floor(sin) + 1;
+
+                context.drawImage(sourceimage, 0, y, width, 1, 0, i, canvas.width, 1);
+                y1_sin_current += y1_sin_add;
+                y2_sin_current += y2_sin_add;
+            }
+            y1_sin += y1_phase_add;
+            //y2_sin += y2_phase_add;
+        }        
+
+        function screen_handler() {
+            if (isKeyDown(keyEnum.G_Key)) {
+                generate_lines();
+            } else {
+                update();
+            }
+        }
+
+        function create() {
+            document.addEventListener('keyup', onKeyUp);
+            document.addEventListener('keydown', onKeyDown);
+            setInterval(screen_handler, 60)
+        }
+
+    </script>
+ </head>
+ <body onload="create();">
+    <canvas id="canvas_container" width="100%" height="100%"></canvas>
+
+    <img id="logo1" src="img/lines.png" style="visibility: hidden;" alt="">
+
+
+ </body>   
+</html>
+
