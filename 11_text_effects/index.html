@@ -58,11 +58,7 @@
 
         var pages = [page1, page2, empty]
 
-        function update() {
-
-            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-
+        function text_writer() {
             let page = pages[page_index];
             let page_wait = page["wait"];
             //let page = pages[2];
@@ -95,6 +91,15 @@
                     page_index = 0;
                 }
             }
+
+        }
+
+
+        function update() {
+
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+            text_writer();
         }
         function screen_handler() {
             update();
