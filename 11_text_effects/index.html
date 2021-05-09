@@ -8,26 +8,23 @@
         body {
             background: linear-gradient(#68edff62, #e7c4c5af)  no-repeat;
         }
-        div {
-            width: 100%; 
-            height: 100%;
-            z-index: -100; 
-            position: absolute; 
-            top: 0; left: 0;
-            font-family: 'Rubik Mono One', sans-serif;
-            color: white;            
-        }
         #textoverlay {
             position: fixed; /* Sit on top of the page content */
-            width: 60%; 
-            height: 60%;
-            top: 20%;
-            left: 20%;
-            background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+            padding: 50px;
+            width: 440px; 
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0,0,0,0.25); /* Black background with opacity */
             z-index: 2; 
             border-radius: 10px;
-            border: 3px solid rgba(128,128,128,0.5);
+            /*border: 3px solid rgba(128,128,128,0.5);*/
             overflow: hidden;
+            word-break: break-all;
+            text-shadow: 0 5.36px 5.896px rgba(0,0,0,1);   
+            font-family: 'Rubik Mono One', sans-serif;
+            color: white;                       
         }        
     </style>    
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -35,22 +32,69 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script>
         var counter = 0;
+        var page_timer = 0;
+        var page_wait = 500;
+        var page_index = 0;
+        var page1 = {
+            wait: 300,
+            lines: [ "*******************************",
+                    "",
+                    "Welcome to another retro demo.",
+                    "Copying ideas from 30 years ago.",
+                    "To make simple webpages in 2021",
+                    "This time some retro text typer",
+                    "",
+                    "*******************************",
+                    ]
+        }
+        var empty = {
+            wait: 30,
+            lines: [  ]
+        }
+        var page2 = {
+            wait: 50,
+            lines: [ "This is page two"]
+        }
 
-
+        var pages = [page1, page2, empty]
 
         function update() {
 
-            const text="Welcome to another retro demo.<p>Copying ideas from 30 years ago.</p><p>To make simple webpages in 2021</p>";
             const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
             const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-  
-            let newtext = text.slice(0, counter % 400);
-            if ((counter % 5) == 0) {
-                newtext += "_";
+
+            let page = pages[page_index];
+            let page_wait = page["wait"];
+            //let page = pages[2];
+            let characters = 0;
+            let text = "";
+            let offset = page_timer;
+            for(let i = 0; i < page["lines"].length; i++) {
+                var line = page["lines"][i];
+                if (offset < line.length) {
+                    text += line.slice(0, offset);
+                    break;
+                }
+                else {
+                    text += line + "</br>";
+                    offset -= line.length;
+                }
             }
-            let title = d3.select("#textoverlay").html(newtext);
+
+            if ((counter % 5) == 0) {
+                text += "_";
+            }
+            let title = d3.select("#textoverlay").html(text);
 
             counter++;
+            page_timer+=1;
+            if (page_timer > page_wait) {
+                page_timer = 0;    
+                page_index++;
+                if (page_index >= pages.length) {
+                    page_index = 0;
+                }
+            }
         }
         function screen_handler() {
             update();
@@ -64,7 +108,6 @@
 <body onload="create();">
     <div id="textoverlay">
     </div>
-
  </body>   
 </html>
 
