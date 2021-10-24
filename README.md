@@ -32,6 +32,17 @@ Steps [README.md](./09_sine_logo/README.md)
 Demonstrate an example of painting canvas images line by line.  
 Steps [README.md](./09_sine_logo/README.md)  
 
+## Example 10 - Waves
+Demonstrate how to create the old waves effect.
+Steps [README.md](./10_waves/README.md)  
+
+## Example 11 - Text Effects 
+Demonstrate a basic text typewriter.
+Steps [README.md](./11_text_effects/README.md)  
+
+## Example 12 - Spaceballs Dancer
+Recreate the Spaceballs Demo Dancer.
+Steps [README.md](./12_spaceballs/README.md)  
 
 ## Extra resources
 * [HTML dev in vscode](https://code.visualstudio.com/docs/languages/html)
