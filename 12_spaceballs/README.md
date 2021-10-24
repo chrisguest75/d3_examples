@@ -1,6 +1,13 @@
 # README
 Spaceballs Dancer
 
+TODO:
+* Preload the frames
+* Have a fade effect behind them.
+* Stop the flickering.
+* Try different rendering effects. 
+* Add a pixelised font render.  
+
 ## Creating SVG
 
 ```sh
