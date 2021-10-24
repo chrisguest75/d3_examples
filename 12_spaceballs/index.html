@@ -9,90 +9,32 @@
           margin: 0;
           width: 100%;
           float: left;
-        }
-        img {
-          height: 100%;
-          margin: 0;
-          width: 100%;
-          float: left;
-        }        
+        }    
         div {width: 100%; height: 100%;z-index: -100; position: absolute; top: 0; left: 0;}
     </style>       
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script type="text/javascript">
         let frame = 0
-        let files = [
-            "./svg/danceloop_00001.svg", 
-            "./svg/danceloop_00002.svg", 
-            "./svg/danceloop_00003.svg", 
-            "./svg/danceloop_00004.svg", 
-            "./svg/danceloop_00005.svg", 
-            "./svg/danceloop_00006.svg", 
-            "./svg/danceloop_00007.svg", 
-            "./svg/danceloop_00008.svg", 
-            "./svg/danceloop_00009.svg", 
-            "./svg/danceloop_00010.svg", 
-            "./svg/danceloop_00011.svg", 
-            "./svg/danceloop_00012.svg", 
-            "./svg/danceloop_00013.svg", 
-            "./svg/danceloop_00014.svg", 
-            "./svg/danceloop_00015.svg", 
-            "./svg/danceloop_00016.svg", 
-            "./svg/danceloop_00017.svg", 
-            "./svg/danceloop_00018.svg", 
-            "./svg/danceloop_00019.svg", 
-            "./svg/danceloop_00020.svg", 
-            "./svg/danceloop_00021.svg", 
-            "./svg/danceloop_00022.svg", 
-            "./svg/danceloop_00023.svg", 
-            "./svg/danceloop_00024.svg", 
-            "./svg/danceloop_00025.svg", 
-            "./svg/danceloop_00026.svg", 
-            "./svg/danceloop_00027.svg", 
-            "./svg/danceloop_00028.svg", 
-            "./svg/danceloop_00029.svg", 
-            "./svg/danceloop_00030.svg", 
-            "./svg/danceloop_00031.svg", 
-            "./svg/danceloop_00032.svg", 
-            "./svg/danceloop_00033.svg", 
-            "./svg/danceloop_00034.svg", 
-            "./svg/danceloop_00035.svg", 
-            "./svg/danceloop_00036.svg", 
-            "./svg/danceloop_00037.svg", 
-            "./svg/danceloop_00038.svg", 
-            "./svg/danceloop_00039.svg", 
-            "./svg/danceloop_00040.svg", 
-            "./svg/danceloop_00041.svg", 
-            "./svg/danceloop_00042.svg", 
-            "./svg/danceloop_00043.svg", 
-            "./svg/danceloop_00044.svg", 
-            "./svg/danceloop_00045.svg", 
-            "./svg/danceloop_00046.svg", 
-            "./svg/danceloop_00047.svg", 
-            "./svg/danceloop_00048.svg", 
-            "./svg/danceloop_00049.svg",                         
-            "./svg/danceloop_00050.svg", 
-            "./svg/danceloop_00051.svg", 
-            "./svg/danceloop_00052.svg", 
-            "./svg/danceloop_00053.svg", 
-            "./svg/danceloop_00054.svg", 
-            "./svg/danceloop_00055.svg", 
-            "./svg/danceloop_00056.svg", 
-            "./svg/danceloop_00057.svg", 
-            "./svg/danceloop_00058.svg", 
-        ]
-
-        function create() {
-            //d3.select("body").append("h1").text("Insert a heading with D3");
-            // d3.select("body").transition().style("background-color", "black");
+        let frames = {}
+        async function create() {
+            frames = await fetch("frames.json")
+                .then(response => response.json())
+                .then(json => frames = json);            
             setInterval(update, 60)
         }
 
         function update() {
-            let img = d3.select("#svgcontainer").html("").append("img");
-            img.attr("src", files[frame]);
+            let svg = d3.select("#svgcontainer").html("").append("svg");
+
+            let dancer = svg.append("g").attr("transform", 'translate(0.000000,720.000000) scale(0.100000,-0.100000)')
+            dancer.append("path").attr("d", frames.frames[(frame + 1) % frames.frames.length].path).attr("fill", "hsl(" + (frame + 0) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
+            dancer.append("path").attr("d", frames.frames[(frame + 2) % frames.frames.length].path).attr("fill", "hsl(" + (frame + 20) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
+            dancer.append("path").attr("d", frames.frames[(frame + 3) % frames.frames.length].path).attr("fill", "hsl(" + (frame + 40) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
+            dancer.append("path").attr("d", frames.frames[(frame + 4) % frames.frames.length].path).attr("fill", "hsl(" + (frame + 60) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
+            dancer.append("path").attr("d", frames.frames[(frame + 5) % frames.frames.length].path).attr("fill", "hsl(" + (frame + 80) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
+        
             frame++;
-            frame = frame % files.length
+            frame = frame % frames.frames.length
 
         }
 
