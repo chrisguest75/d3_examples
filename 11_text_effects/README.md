@@ -1,5 +1,5 @@
 # README
-Use this to create new examples
+Demonstrate a basic text typewriter.
 
 ```sh
 open ./index.html
