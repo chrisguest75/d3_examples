@@ -20,18 +20,28 @@
             frames = await fetch("frames.json")
                 .then(response => response.json())
                 .then(json => frames = json);            
-            setInterval(update, 60)
+
+
+            /*let svg = d3.select("#svgcontainer").html("").append("svg").attr("viewBox", "0 0 1280.000000 720.000000");
+
+            let dancer = svg.append("g").attr("transform", 'translate(0.000000,720.000000) scale(0.100000,-0.100000)')
+            dancer.append("path").attr("d", frames.frames[(frame + 1) % frames.frames.length].path).attr("fill", "hsl(" + (frame + 0) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");*/    
+
+            setInterval(update, 40)
+
+
+
         }
 
         function update() {
-            let svg = d3.select("#svgcontainer").html("").append("svg");
+            let svg = d3.select("#svgcontainer").html("").append("svg").attr("viewBox", "0 0 1280.000000 720.000000");
 
             let dancer = svg.append("g").attr("transform", 'translate(0.000000,720.000000) scale(0.100000,-0.100000)')
-            dancer.append("path").attr("d", frames.frames[(frame + 1) % frames.frames.length].path).attr("fill", "hsl(" + (frame + 0) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
-            dancer.append("path").attr("d", frames.frames[(frame + 2) % frames.frames.length].path).attr("fill", "hsl(" + (frame + 20) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
-            dancer.append("path").attr("d", frames.frames[(frame + 3) % frames.frames.length].path).attr("fill", "hsl(" + (frame + 40) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
-            dancer.append("path").attr("d", frames.frames[(frame + 4) % frames.frames.length].path).attr("fill", "hsl(" + (frame + 60) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
-            dancer.append("path").attr("d", frames.frames[(frame + 5) % frames.frames.length].path).attr("fill", "hsl(" + (frame + 80) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
+            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 4) % frames.frames.length)].path).attr("fill", "hsl(" + (frame + 80) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
+            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 3) % frames.frames.length)].path).attr("fill", "hsl(" + (frame + 60) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
+            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 2) % frames.frames.length)].path).attr("fill", "hsl(" + (frame + 40) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");    
+            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 1) % frames.frames.length)].path).attr("fill", "hsl(" + 30 + ", 70%, 43%)").attr("fill-opacity", "0.25");    
+            dancer.append("path").attr("d", frames.frames[Math.abs((frame - 0) % frames.frames.length)].path).attr("fill", "hsl(" + 0 + ", 0%, 0%)").attr("fill-opacity", "1.00");    
         
             frame++;
             frame = frame % frames.frames.length
