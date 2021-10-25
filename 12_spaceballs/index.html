@@ -36,7 +36,39 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">         
-    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+    <!-- SEO https://moz.com/learn/seo/meta-description -->
+    <meta name="description" content="Homage to the Amiga Spaceballs Demo">
+    
+    <!-- OpenGraph https://ogp.me/ -->
+    <!-- https://www.freecodecamp.org/news/what-is-open-graph-and-how-can-i-use-it-for-my-website/ -->
+    <meta property="og:title" content="Spaceballs">
+    <meta property="og:description" content="Homage to the Amiga Spaceballs Demo">
+    <meta property="og:image" content="https://spaceballs.herokuapp.com/og/og.jpg">
+    <meta property="og:image:alt" content="Homage to the Amiga Spaceballs Demo">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://spaceballs.herokuapp.com/">
+
+    <!-- Twitter Card https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@guestchris">
+    <meta name="twitter:creator" content="@guestchris">
+    <meta name="twitter:title" content="Spaceballs">
+    <meta name="twitter:description" content="Homage to the Amiga Spaceballs Demo">
+    <meta name="twitter:image" content="https://spaceballs.herokuapp.com/og/og.jpg">
+
+    <link rel="canonical" href="https://spaceballs.herokuapp.com/">
+  
+    <!--<link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">-->
+
+    <!--<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/my.webmanifest">-->
+
+    <meta name="theme-color" content="#FFFFFF">    
+
+    <script src="https://d3js.org/d3.v6.min.js"></script>    
     <script type="text/javascript">
         let frame = 0
         let frames = {}
@@ -45,16 +77,7 @@
                 .then(response => response.json())
                 .then(json => frames = json);            
 
-
-            /*let svg = d3.select("#svgcontainer").html("").append("svg").attr("viewBox", "0 0 1280.000000 720.000000");
-
-            let dancer = svg.append("g").attr("transform", 'translate(0.000000,720.000000) scale(0.100000,-0.100000)')
-            dancer.append("path").attr("d", frames.frames[(frame + 1) % frames.frames.length].path).attr("fill", "hsl(" + (frame + 0) % frames.frames.length + ", 70%, 43%)").attr("fill-opacity", "0.25");*/    
-
             setInterval(update, 40)
-
-
-
         }
 
         function update() {
@@ -73,6 +96,7 @@
         }
 
     </script>
+
  </head>
  <body onload="create();">
 

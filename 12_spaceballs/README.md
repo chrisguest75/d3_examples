@@ -3,9 +3,11 @@ Recreate the Spaceballs Demo Dancer
 
 TODO:
 * Try different rendering effects. 
-* Add a pixelised font render.  
+* Add mod music player
+    https://github.com/warpdesign/modplayer-js
 
-## Creating SVG
+
+## Creating SVG frames 
 
 ```sh
 # download a video of a dancer
@@ -44,8 +46,26 @@ done
 
 potrace --svg --output ./svg_frames/headlooktest_00001.svg ./converted_frames/headlooktest_00001.bmp 
 
-
 # open in chrome
 open ./svg_frames/headlooktest_00001.svg     
 
+```
+
+
+## Deploy to heroku
+```sh
+# open heroku dashboard and create a qberted app.
+open https://dashboard.heroku.com/
+
+brew tap heroku/brew && brew install heroku
+heroku login
+heroku container:login
+
+# build and push
+docker build -f Dockerfile -t registry.heroku.com/spaceballs/web .
+docker push registry.heroku.com/spaceballs/web
+
+# create the new release
+heroku container:release web -a spaceballs
+open https://spaceballs.herokuapp.com/
 ```
