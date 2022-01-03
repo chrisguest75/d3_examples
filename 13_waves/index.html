@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
+    <style>
+
+        body,
+        svg {
+            height: 100%;
+            margin: 0;
+            width: 100%;
+            float: left;
+            background-color: #ffffff;
+        }
+        .underlay {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%; 
+            height: 100%;
+            z-index: -100; 
+            position: absolute; 
+            top: 0; 
+            left: 0;
+        }
+        #svgcontainer {
+            height: 100%;
+            margin: 0;
+            width: 100%;
+        }
+        #sinepath0 {
+            fill:hsl(202, 48%, 53%);
+        }
+        #sinepath1 {
+            fill:hsl(202, 48%, 63%);
+        }
+        #sinepath2 {
+            fill:hsl(202, 48%, 73%);
+        }
+        #sinepath3 {
+            fill:hsl(202, 48%, 83%);
+        }
+        
+        .title {
+            -webkit-text-stroke: 5px #44444450;
+            font-family: 'Nunito', sans-serif;
+            font-size: 10vw;
+            font-weight: 900;
+            letter-spacing: 0.1rem; 
+            text-align: center;
+        }
+
+        .row {
+            z-index: -100; 
+            width: 100%; 
+            position: absolute; 
+        }
+
+        .overlay {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%; 
+            height: 100%;
+            z-index: 100; 
+            position: absolute; 
+            top: 0; 
+            left: 0;
+        }   
+        .plasma {
+            color: transparent;
+                background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%),
+                        linear-gradient(127deg, rgba(0,255,0,.8), rgba(0,255,0,0) 40.71%),
+                        linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1 span:hover {
+            -webkit-text-fill-color: aquamarine;
+        }
+    </style>       
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script>
+        function create() {
+            setInterval(update, 60)
+        }
+
+        function update() {
+            update_waves();
+            update_plasma();
+        }
+        const rad = 2.0 * Math.PI;
+
+        var deg1 = 0;
+        var deg2 = 50;
+        var deg3 = 80;
+        var hue1 = 0;
+        var hue2 = 130;
+
+        function update_plasma() {
+            var plasma = d3.select("#plasma");
+            plasma.attr("style","background: linear-gradient(" + deg1 + "deg,  hsla(" + hue1 + ",70%,50%,1), hsla(" + hue2 + ",60%,70%,1) 70.71%),linear-gradient(" + deg2 + "deg, rgba(0,255,0,.8), rgba(0,255,0,0.6) 40.71%),linear-gradient(" + deg3 + "deg, rgba(0,0,255,.8), rgba(0,255,0,0.5) 90.71%);color: transparent;-webkit-background-clip: text;background-clip: text;-webkit-text-fill-color: transparent;");
+            deg1 += 1.0;
+            deg2 += 3.0;
+            deg3 -= 2.0;
+            hue1 += 1.0;
+            hue2 += 2.1;
+        }
+
+        const points = 100;   
+
+        var sines = [[0.0, 1.5 * Math.PI],[0.5 * Math.PI, 0.9 * Math.PI],[0.2 * Math.PI, 1.9 * Math.PI],[1.2 * Math.PI, 1.8 * Math.PI]];    
+        var sinemod = [[rad / 150.0, rad / 2500.0],[rad / 175.0, rad / 1000],[rad / 225.0, rad / 1400],[rad / 205.0, rad / 1100]];    
+        var sinephaser = [[rad / points * 2, rad / points * 3],[rad / points * 2, rad / points * 1],[rad / points * 2, rad / points],[rad / points, rad / points]];    
+
+        function update_waves() {
+            let svg = d3.select("#svgcontainer").html("").append("svg");
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+ 
+            let x_step = vw / points;
+            
+            for (let line = 0; line < sines.length; line++) {        
+                let phaser_a = sinephaser[line][0] 
+                let phaser_b = sinephaser[line][1] 
+                let rad_step = (rad / (points / (line + 1)));    
+                let x = 0;
+                let data = [];
+                let sin_a = sines[line][0];
+                let sin_b = sines[line][1];
+
+                for (var i = 0; i < points + 1; i++) {
+                    data.push([x, (Math.sin(sin_a) * 30) + (Math.sin(sin_b) * 25) + (vh / 2) + (line * 80)]);
+                    x += x_step;
+                    sin_a += phaser_a;                    
+                    sin_b += phaser_b;                    
+                }    
+                //sinephaser[line][0] += rad / (100 * (line + 1))
+                //sinephaser[line][1] += rad / (100 * (line + 1))
+
+                data.push([x, vh]);
+                data.push([0, vh]);
+
+                let lineGenerator = d3.line();
+                let pathString = lineGenerator(data);
+                svg.append("path").attr('id', "sinepath" + line).attr('d', pathString);
+
+                sines[line][0] += sinemod[line][0];
+                sines[line][1] += sinemod[line][1];   
+
+            }
+        }
+        
+    </script>
+
+ </head>
+ <body onload="javascript:create();">
+
+
+    <div class="overlay">
+        <div class="row" >
+            <div><h1 id="plasma" class="title" ><span>*</span><span>W</span><span>A</span><span>T</span><span>E</span><span>R</span><span>&nbsp;</span><span>W</span><span>O</span><span>R</span><span>L</span><span>D</span><span>*</span></h1></div>
+        </div>
+    </div>
+    <div class="underlay">
+        <div id = "svgcontainer"></div>
+    </div>     
+
+</body>
+ </html>
+
