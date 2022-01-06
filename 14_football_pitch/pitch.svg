@@ -1,0 +1,20 @@
+<svg width="1201" height="721" viewBox="0 0 1201 721" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Pitch">
+<rect id="Pitch_2" x="2.5" y="2.5" width="1195" height="715" fill="#42B140" stroke="white" stroke-width="5"/>
+<circle id="Centre" cx="602" cy="360" r="117.5" fill="#42B140" stroke="white" stroke-width="5"/>
+<rect id="Halfway" x="601.25" y="1.25" width="2.5" height="717.5" fill="#42B140" stroke="white" stroke-width="2.5"/>
+<circle id="Dee" cx="129" cy="360" r="63.5" fill="#42B140" stroke="white" stroke-width="5"/>
+<circle id="Dee_2" cx="1072" cy="360" r="63.5" fill="#42B140" stroke="white" stroke-width="5"/>
+<rect id="Box" x="2.5" y="202.5" width="154" height="315" fill="#42B140" stroke="white" stroke-width="5"/>
+<rect id="Box_2" x="1043.5" y="202.5" width="154" height="315" fill="#42B140" stroke="white" stroke-width="5"/>
+<rect id="6yard" x="2.5" y="274.5" width="45" height="175" fill="#42B140" stroke="white" stroke-width="5"/>
+<rect id="6yard_2" x="1151.5" y="274.5" width="45" height="175" fill="#42B140" stroke="white" stroke-width="5"/>
+<path id="Corner" d="M1199 695.32C1190.9 695.32 1186.85 693.352 1179.64 699.174C1172.42 704.995 1174.19 720 1174.19 720" stroke="white" stroke-width="5"/>
+<path id="Corner_2" d="M24.6798 720C24.6798 711.902 26.6477 707.853 20.8262 700.639C15.0046 693.424 -4.38158e-07 695.191 -4.38158e-07 695.191" stroke="white" stroke-width="5"/>
+<path id="Corner_3" d="M8.10612e-07 27.6798C8.0979 27.6798 12.1469 29.6477 19.3614 23.8262C26.5758 18.0046 24.809 3 24.809 3" stroke="white" stroke-width="5"/>
+<path id="Corner_4" d="M1175.32 8.10612e-07C1175.32 8.0979 1173.35 12.1469 1179.17 19.3614C1185 26.5758 1200 24.809 1200 24.809" stroke="white" stroke-width="5"/>
+<circle id="Spot" cx="117" cy="362" r="5" fill="white"/>
+<circle id="Spot_2" cx="603" cy="362" r="5" fill="white"/>
+<circle id="Spot_3" cx="1089" cy="362" r="5" fill="white"/>
+</g>
+</svg>
