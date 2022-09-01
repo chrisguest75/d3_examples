@@ -28,6 +28,10 @@ Steps [README.md](./06_3d_globe/README.md)
 Demonstrate how to build a 3d starfield using typescript and D3  
 Steps [README.md](./09_sine_logo/README.md)  
 
+## Example 8 - css sprites
+Demonstrate how to use CSS sprites   
+Steps [README.md](./08_sprites/README.md)  
+
 ## Example 9 - Sine Background
 Demonstrate an example of painting canvas images line by line.  
 Steps [README.md](./09_sine_logo/README.md)  
