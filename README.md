@@ -23,57 +23,57 @@ code --install-extension vivaxy.vscode-conventional-commits
 pre-commit install --hook-type commit-msg --hook-type pre-push
 ```
 
-## Example 1 - Basic SVG - Shade bobs
+## 01 - Basic SVG - Shade bobs
 
 Demonstrate an example DOM manipulation with SVG.  
 Steps [README.md](./01_basic_svg/README.md)  
 
-## Example 2 - Sine Scroller
+## 02 - Sine Scroller
 
 Demonstrate how to build a sine scroller with D3 and SVG  
 Steps [README.md](./02_svg_sinetext/README.md)  
 
-## Example 3 - Plasma
+## 03 - Plasma
 
 Demonstrate how to build a plasma in using gradients  
 Steps [README.md](./03_plasma/README.md)  
 
-## Example 4 - Animating Stars
+## 04 - Animating Stars
 
 Demonstrate how to create some SVG objects and animate them  
 Steps [README.md](./04_animating_stars/README.md)  
 
-## Example 5 - Horizontal 2d Starfield
+## 05 - Horizontal 2d Starfield
 
 Demonstrate how to create a horizontal 2d starfield effect  
 Steps [README.md](./05_2d_starfield/README.md)  
 
-## Example 6 - 3d globe
+## 06 - 3d globe
 
 Demonstrate how to create a 3d globe with typescript  
 Steps [README.md](./06_3d_globe/README.md)  
 
-## Example 7 - 3d Starfield
+## 07 - 3d Starfield
 
 Demonstrate how to build a 3d starfield using typescript and D3  
 Steps [README.md](./09_sine_logo/README.md)  
 
-## Example 9 - Sine Background
+## 09 - Sine Background
 
 Demonstrate an example of painting canvas images line by line.  
 Steps [README.md](./09_sine_logo/README.md)  
 
-## Example 10 - Waves
+## 10 - Waves
 
 Demonstrate how to create the old waves effect.  
 Steps [README.md](./10_waves/README.md)  
 
-## Example 11 - Text Effects
+## 11 - Text Effects
 
 Demonstrate a basic text typewriter.  
 Steps [README.md](./11_text_effects/README.md)  
 
-## Example 12 - Spaceballs Dancer
+## 12 - Spaceballs Dancer
 
 Recreate the Spaceballs Demo Dancer.  
 Steps [README.md](./12_spaceballs/README.md)  

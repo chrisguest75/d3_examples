@@ -1,16 +1,7 @@
-// create tooltip div
-const tooltip = d3.select("body")
-    .append("div")
-    .attr("class", "tooltip");
 
-// Create a second tooltip div for raw date
-
-const tooltipRawDate = d3.select("body")
-    .append("div")
-    .attr("class", "tooltip");
 
 /**
- * group trades by day
+ * group trades by day by splitting the date string at the 'T' character
  * @param trades 
  * */
 function groupTradesByDay(trades) {
@@ -147,7 +138,6 @@ function drawChart(id, aggregated) {
         .style("pointer-events", "none");
 
     // Add red lines extending from the circle to the date and value
-
     const tooltipLineX = svg.append("line")
         .attr("class", "tooltip-line")
         .attr("id", "tooltip-line-x")
@@ -163,14 +153,11 @@ function drawChart(id, aggregated) {
         .attr("stroke-dasharray", "2,2");
 
     // create a listening rectangle
-
     const listeningRect = svg.append("rect")
         .attr("width", width)
         .attr("height", height);
 
-
     // create the mouse move function
-
     listeningRect.on("mousemove", function (event) {
         const [xCoord] = d3.pointer(event, this);
         const bisectDate = d3.bisector(d => d.Date).left;
@@ -194,26 +181,21 @@ function drawChart(id, aggregated) {
             .attr("r", 5);
 
         // Update the position of the red lines
-
         tooltipLineX.style("display", "block").attr("x1", xPos).attr("x2", xPos).attr("y1", 0).attr("y2", height);
         tooltipLineY.style("display", "block").attr("y1", yPos).attr("y2", yPos).attr("x1", 0).attr("x2", width);
 
-
         // add in our tooltip
-
         tooltip
             .style("display", "block")
             .style("left", `${width + 90}px`)
             .style("top", `${yPos + 68}px`)
             .html(`$${d.value !== undefined ? d.value.toFixed(2) : 'N/A'}`);
 
-
         tooltipRawDate
             .style("display", "block")
             .style("left", `${xPos + 60}px`)
             .style("top", `${height + 53}px`)
             .html(`${d.Date !== undefined ? d.Date.toISOString().slice(0, 10) : 'N/A'}`);
-
     });
 
     listeningRect.on("mouseleave", function () {
@@ -227,66 +209,137 @@ function drawChart(id, aggregated) {
     });
 }
 
-d3.json("14_line_charts/data/trades.json").then(data1 => {
-    // Load and process the data    
-    const trades = data1
-    const grouped = groupTradesByDay(trades)
-
-    console.log(grouped)
-    const aggregated = Object.keys(grouped).map(key => {
-        const trades = grouped[key]
+function createTableData(data) {
+    return Object.keys(data).map(key => {
+        const value = data[key]
         return {
-            Date: key,
-            ...aggregateTrades(trades)
+            key,
+            value
         }
     })
-    console.log(aggregated)
+}
 
-    const parseDate = d3.timeParse("%Y-%m-%d");
+function loadTable(data) {
+    console.log(data)
+    $('#details_table').bootstrapTable({
+        columns: [{
+            field: 'key',
+            title: 'Key'
+        }, {
+            field: 'value',
+            title: 'Value'
+        }],
+        data: createTableData(data)
+    })
+}
 
-    const buys = [];
-    aggregated.forEach(d => {
-        const item = { Date: parseDate(d.Date), value: d.numBuys };
-        buys.push(item);
-    });
-    console.log(buys)
-    drawChart("#trades1", buys)
 
-    const accbuys = [];
-    let buysValue = 0;
-    aggregated.forEach(d => {
-        buysValue += d.numBuys;
-        const item = { Date: parseDate(d.Date), value: buysValue };
-        accbuys.push(item);
-    });
-    console.log(buys)
-    drawChart("#trades2", accbuys)
+function loadData() {
+    // create tooltip div
+    d3.json("14_line_charts/data/trades.json").then(data1 => {
+        // Load and process the data    
+        const trades = data1
+        const grouped = groupTradesByDay(trades)
+        const aggregatedTrades = aggregateTrades(trades)
+        loadTable(aggregatedTrades)
 
-    const sells = [];
-    aggregated.forEach(d => {
-        const item = { Date: parseDate(d.Date), value: d.numSells };
-        sells.push(item);
-    });
-    console.log(sells)
-    drawChart("#trades3", sells)
+        console.log(grouped)
+        const aggregated = Object.keys(grouped).map(key => {
+            const trades = grouped[key]
+            return {
+                Date: key,
+                ...aggregateTrades(trades)
+            }
+        })
+        console.log(aggregated)
 
-    const accsells = [];
-    let sellsValue = 0;
-    aggregated.forEach(d => {
-        sellsValue += d.numSells;
-        const item = { Date: parseDate(d.Date), value: sellsValue };
-        accsells.push(item);
-    });
-    console.log(buys)
-    drawChart("#trades4", accsells)
+        const parseDate = d3.timeParse("%Y-%m-%d");
 
-    const profit = [];
-    let profitValue = 0;
-    aggregated.forEach(d => {
-        profitValue += d.profit;
-        const item = { Date: parseDate(d.Date), value: profitValue };
-        profit.push(item);
-    });
-    console.log(profit)
-    drawChart("#trades5", profit)
-})
+        const dateRange = [];
+        aggregated.forEach(d => {
+            const item = { Date: parseDate(d.Date) };
+            dateRange.push(item);
+        });
+        console.log(dateRange)
+
+        // Define the slider
+        const sliderRange = d3
+            .sliderBottom()
+            .min(d3.min(dateRange, d => d.Date))
+            .max(d3.max(dateRange, d => d.Date))
+            .width(600)
+            .tickFormat(d3.timeFormat('%Y-%m-%d'))
+            .ticks(3)
+            .default([d3.min(dateRange, d => d.Date), d3.max(dateRange, d => d.Date)])
+            .fill('#85bb65');
+
+        // Add the slider to the DOM
+        const gRange = d3
+            .select('#slider-range')
+            .append('svg')
+            .attr('width', 800)
+            .attr('height', 100)
+            .append('g')
+            .attr('transform', 'translate(90,30)');
+
+        gRange.call(sliderRange);
+
+        const buys = [];
+        aggregated.forEach(d => {
+            const item = { Date: parseDate(d.Date), value: d.numBuys };
+            buys.push(item);
+        });
+        console.log(buys)
+        drawChart("#trades1", buys)
+
+        const accbuys = [];
+        let buysValue = 0;
+        aggregated.forEach(d => {
+            buysValue += d.numBuys;
+            const item = { Date: parseDate(d.Date), value: buysValue };
+            accbuys.push(item);
+        });
+        console.log(buys)
+        drawChart("#trades2", accbuys)
+
+        const sells = [];
+        aggregated.forEach(d => {
+            const item = { Date: parseDate(d.Date), value: d.numSells };
+            sells.push(item);
+        });
+        console.log(sells)
+        drawChart("#trades3", sells)
+
+        const accsells = [];
+        let sellsValue = 0;
+        aggregated.forEach(d => {
+            sellsValue += d.numSells;
+            const item = { Date: parseDate(d.Date), value: sellsValue };
+            accsells.push(item);
+        });
+        console.log(buys)
+        drawChart("#trades4", accsells)
+
+        const profit = [];
+        let profitValue = 0;
+        aggregated.forEach(d => {
+            profitValue += d.profit;
+            const item = { Date: parseDate(d.Date), value: profitValue };
+            profit.push(item);
+        });
+        console.log(profit)
+        drawChart("#trades5", profit)
+
+    })
+}
+
+const tooltip = d3.select("body")
+    .append("div")
+    .attr("class", "tooltip");
+
+// Create a second tooltip div for raw date
+
+const tooltipRawDate = d3.select("body")
+    .append("div")
+    .attr("class", "tooltip");
+
