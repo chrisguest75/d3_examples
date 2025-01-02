@@ -1,9 +1,10 @@
 
 
 /**
- * group trades by day by splitting the date string at the 'T' character
- * @param trades 
- * */
+ * Group trades by day by splitting the date string at the 'T' character
+ * @param trades requires an .at field which is the date of the trade
+ * @returns   
+ */
 function groupTradesByDay(trades) {
     const grouped = trades.reduce((acc, trade) => {
         const day = trade.at.split('T')[0]
@@ -17,49 +18,37 @@ function groupTradesByDay(trades) {
     return grouped
 }
 
+/**
+ * 
+ * @param {*} trades 
+ * @returns 
+ */
 function aggregateTrades(trades) {
-    const aggregated = trades.reduce((acc, trade) => {
-        if (trade.type === 'buy') {
-            acc.buy += trade.value
-            acc.numBuys++
-            if ((acc.minBuy == 0) || (trade.value < acc.minBuy)) {
-                acc.minBuy = trade.value
-            }
-            if (trade.value > acc.maxBuy) {
-                acc.maxBuy = trade.value
-            }
-        } else {
-            acc.sell += trade.value
-            acc.numSells++
-            if ((acc.minSell == 0) || (trade.value < acc.minSell)) {
-                acc.minSell = trade.value
-            }
-            if (trade.value > acc.maxSell) {
-                acc.maxSell = trade.value
-            }
-        }
-        acc.profit = acc.sell - acc.buy
-        return acc
-    }, { buy: 0, sell: 0, numTrades: trades.length, numBuys: 0, numSells: 0, minSell: 0, maxSell: 0, minBuy: 0, maxBuy: 0, avgBuy: 0, avgSell: 0, profit: 0 })
+    const buys = d3.filter(trades, d => d.type === 'buy')
+    const sells = d3.filter(trades, d => d.type === 'sell')
 
-    // calculate averages
-    aggregated.avgBuy = aggregated.buy / aggregated.numBuys
-    aggregated.avgSell = aggregated.sell / aggregated.numSells
+    const totalBuys = d3.sum(buys, d => d.value)
+    const totalSells = d3.sum(sells, d => d.value)
 
-    // round to 3 decimal places
-    aggregated.avgBuy = Math.round(aggregated.avgBuy * 1000) / 1000
-    aggregated.avgSell = Math.round(aggregated.avgSell * 1000) / 1000
-
-    return aggregated
+    return {
+        numTrades: trades.length,
+        numBuys: buys.length || 0,
+        numSells: sells.length || 0,
+        minBuy: d3.min(buys, d => d.value) || 0,
+        maxBuy: d3.max(buys, d => d.value) || 0,
+        minSell: d3.min(sells, d => d.value) || 0,
+        maxSell: d3.max(sells, d => d.value) || 0,
+        profit: totalSells - totalBuys,
+    }
 }
 
 /**
- * draw trades chart
+ * Draw trades chart
  */
 function drawChart(parent, id, aggregated, title, subtitle) {
-    d3.select(`#${parent}`) 
-    .append('div')
-    .html(`
+    d3.select(`#${parent}`)
+        .append('div')
+        .html(`
       <div class="px-4 py-2 mx-4 mb-5 text-center rounded-4 bg-secondary-subtle border border-secondary-subtle">
         <div class="d-block mx-auto mb-4" id="${id}"></div>
         <h1 class="display-5 fw-bold text-body-emphasis">${title}</h1>
@@ -111,8 +100,7 @@ function drawChart(parent, id, aggregated, title, subtitle) {
         .call(d3.axisRight(y).tickFormat(d => {
             if (isNaN(d)) return "";
             return `£${d.toFixed(0)}`;
-        })
-        )
+        }))
 
     // Set up the line generator
     const line = d3.line()
@@ -182,12 +170,9 @@ function drawChart(parent, id, aggregated, title, subtitle) {
         const yPos = y(d.value);
 
         // UpDate the circle position
-
         circle.attr("cx", xPos).attr("cy", yPos);
 
-
         // Add transition for the circle radius
-
         circle.transition()
             .duration(50)
             .attr("r", 5);
@@ -196,12 +181,18 @@ function drawChart(parent, id, aggregated, title, subtitle) {
         tooltipLineX.style("display", "block").attr("x1", xPos).attr("x2", xPos).attr("y1", 0).attr("y2", height);
         tooltipLineY.style("display", "block").attr("y1", yPos).attr("y2", yPos).attr("x1", 0).attr("x2", width);
 
+
+        /*
+        <div class="" id="test">
+        <div data-bs-container="#test" data-bs-placement="right"  data-bs-toggle="tooltip" title="Example popover - title" data-bs-html="true" >a</div>
+        </div>
+        */
         // add in our tooltip
         tooltip
             .style("display", "block")
             .style("left", `${width + 90}px`)
             .style("top", `${yPos + 68}px`)
-            .html(`$${d.value !== undefined ? d.value.toFixed(2) : 'N/A'}`);
+            .html(`${d.value !== undefined ? d.value.toFixed(2) : 'N/A'}`);
 
         tooltipRawDate
             .style("display", "block")
@@ -219,6 +210,8 @@ function drawChart(parent, id, aggregated, title, subtitle) {
         tooltipLineX.style("display", "none");
         tooltipLineY.style("display", "none");
     });
+
+    return { id, svg, x, y, aggregated, line, area };
 }
 
 function createTableData(data) {
@@ -247,6 +240,11 @@ function loadTable(data) {
 
 
 function loadData(dataUrl) {
+    $("[data-bs-toggle=tooltip").tooltip();
+    $("[data-bs-toggle=popover]").popover();
+
+    const charts = []
+
     // create tooltip div
     d3.json(dataUrl).then(data1 => {
         // Load and process the data    
@@ -296,14 +294,14 @@ function loadData(dataUrl) {
 
         gRange.call(sliderRange);
 
+
         // buys
         const buys = [];
         aggregated.forEach(d => {
             const item = { Date: parseDate(d.Date), value: d.numBuys };
             buys.push(item);
         });
-        console.log(buys)
-        drawChart("charts", "trades1", buys, "Number of buys each day", "Show buy events per day")
+        charts.push(drawChart("charts", "trades1", buys, "Number of buys each day", "Show buy events per day"))
 
         // accumulated buys
         const accbuys = [];
@@ -313,17 +311,17 @@ function loadData(dataUrl) {
             const item = { Date: parseDate(d.Date), value: buysValue };
             accbuys.push(item);
         });
-        console.log(buys)
-        drawChart("charts", "trades2", accbuys, "Accumulated buys", "Show accumulated buy events per day")
-        
+        charts.push(drawChart("charts", "trades2", accbuys, "Accumulated buys", "Show accumulated buy events per day"))
+
+        // sells
         const sells = [];
         aggregated.forEach(d => {
             const item = { Date: parseDate(d.Date), value: d.numSells };
             sells.push(item);
         });
-        console.log(sells)
-        drawChart("charts", "trades3", sells, "Number of sells each day", "Show sell events per day")
+        charts.push(drawChart("charts", "trades3", sells, "Number of sells each day", "Show sell events per day"))
 
+        // accumulated sells
         const accsells = [];
         let sellsValue = 0;
         aggregated.forEach(d => {
@@ -331,9 +329,9 @@ function loadData(dataUrl) {
             const item = { Date: parseDate(d.Date), value: sellsValue };
             accsells.push(item);
         });
-        console.log(buys)
-        drawChart("charts", "trades4", accsells, "Accumulated sells", "Show accumulated sell events per day")
+        charts.push(drawChart("charts", "trades4", accsells, "Accumulated sells", "Show accumulated sell events per day"))
 
+        // profit
         const profit = [];
         let profitValue = 0;
         aggregated.forEach(d => {
@@ -341,9 +339,57 @@ function loadData(dataUrl) {
             const item = { Date: parseDate(d.Date), value: profitValue };
             profit.push(item);
         });
-        console.log(profit)
-        drawChart("charts", "trades5", profit, "Accumulated profits", "Show accumulated profits by day")
+        charts.push(drawChart("charts", "trades5", profit, "Accumulated profits", "Show accumulated profits by day"))
+
+        console.log(charts)
+
+        sliderRange.on('onchange', val => {
+            charts.forEach(chart => {
+                const { svg, x, y, aggregated, line, area } = chart;
+
+                // Set new domain for x scale
+                x.domain(val);
+
+                // Filter data based on slider values
+                const filteredData = aggregated.filter(d => d.Date >= val[0] && d.Date <= val[1]);
+
+                // Update the line and area to new domain
+                svg.select(".line").attr("d", line(filteredData));
+                svg.select(".area").attr("d", area(filteredData));
+                // Set new domain for y scale based on new data
+                if (d3.max(filteredData, d => d.value) >= 0) {
+                    y.domain([0, d3.max(aggregated, d => d.value)]);
+                    colour = "#85bb65";
+                } else {
+                    y.domain([d3.min(aggregated, d => d.value), 0]);
+                    colour = "#d62728";
+                }
+
+                // Update the x-axis with new domain
+                svg.select(".x-axis")
+                    .transition()
+                    .duration(300) // transition duration in ms
+                    .call(d3.axisBottom(x)
+                        .tickValues(x.ticks(d3.timeYear.every(1)))
+                        .tickFormat(d3.timeFormat("%Y")));
+
+                // Update the y-axis with new domain
+                svg.select(".y-axis")
+                    .transition()
+                    .duration(300) // transition duration in ms
+                    .call(d3.axisRight(y)
+                        .ticks(10)
+                        .tickFormat(d => {
+                            if (d <= 0) return "";
+                            return `$${d.toFixed(2)}`;
+                        }));
+            });
+        });
+
     })
+
+
+
 }
 
 const tooltip = d3.select("body")
@@ -351,7 +397,6 @@ const tooltip = d3.select("body")
     .attr("class", "tooltip");
 
 // Create a second tooltip div for raw date
-
 const tooltipRawDate = d3.select("body")
     .append("div")
     .attr("class", "tooltip");

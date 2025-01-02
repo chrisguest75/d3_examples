@@ -4,15 +4,12 @@ TODO:
 
 * overlay buy and sell events
 * tooltips
-* Improve styles - flexbox, opacity, responsive
 * trendlines
-* Tidy up code.
 * Buy & Sell (events and value), Profit, Stock, Timeline selection
-* Filters
 * highlight regions
 * Fix loading please wait
 * horizontal tick names
-* Table key names
+* update table
 
 ## Run
 
