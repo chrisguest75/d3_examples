@@ -89,18 +89,31 @@ function drawChart(parent, id, aggregated, title, subtitle) {
         colour = "#d62728";
     }
 
-    // Add the x-axis
     svg.append("g")
+        .attr("class", "x-axis")
         .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x));
+        .style("font-size", "8px")
+        .call(d3.axisBottom(x)
+            .tickValues(x.ticks(d3.timeMonth.every(1)))
+            .tickFormat(d3.timeFormat("%Y-%m")))
+        .selectAll(".tick line")
+        .style("stroke-opacity", 1)
+    svg.selectAll(".tick text")
+        .attr("fill", "#777");
 
     // Add the y-axis
     svg.append("g")
+        .attr("class", "y-axis")
         .attr("transform", `translate(${width},0)`)
-        .call(d3.axisRight(y).tickFormat(d => {
-            if (isNaN(d)) return "";
-            return `£${d.toFixed(0)}`;
-        }))
+        .style("font-size", "10px")
+        .call(d3.axisRight(y)
+            .ticks(10)
+            .tickFormat(d => {
+                if (isNaN(d)) return "";
+                return `$${d.toFixed(2)}`;
+            }))
+        .selectAll(".tick text")
+        .style("fill", "#777");
 
     // Set up the line generator
     const line = d3.line()
@@ -226,15 +239,18 @@ function createTableData(data) {
 
 function loadTable(data) {
     console.log(data)
-    $('#details_table').bootstrapTable({
-        columns: [{
-            field: 'key',
-            title: 'Key'
-        }, {
-            field: 'value',
-            title: 'Value'
-        }],
-        data: createTableData(data)
+
+    $(document).ready(function () {
+        $('#details_table').bootstrapTable({
+            columns: [{
+                field: 'key',
+                title: 'Key'
+            }, {
+                field: 'value',
+                title: 'Value'
+            }],
+            data: createTableData(data)
+        })
     })
 }
 
@@ -370,8 +386,8 @@ function loadData(dataUrl) {
                     .transition()
                     .duration(300) // transition duration in ms
                     .call(d3.axisBottom(x)
-                        .tickValues(x.ticks(d3.timeYear.every(1)))
-                        .tickFormat(d3.timeFormat("%Y")));
+                        .tickValues(x.ticks(d3.timeMonth.every(1)))
+                        .tickFormat(d3.timeFormat("%Y-%m")));
 
                 // Update the y-axis with new domain
                 svg.select(".y-axis")

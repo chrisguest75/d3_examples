@@ -8,7 +8,6 @@ TODO:
 * Buy & Sell (events and value), Profit, Stock, Timeline selection
 * highlight regions
 * Fix loading please wait
-* horizontal tick names
 * update table
 
 ## Run
