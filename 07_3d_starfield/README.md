@@ -1,7 +1,9 @@
 # README
+
 Demonstrate how to build a 3d starfield using typescript and D3
 
 ## Run it
+
 ```sh
 npm install
 npm run start
@@ -31,6 +33,7 @@ npm install @types/d3 --save-dev
 ```
 
 Update the package.json
+
 ```json
     "start": "run-p -l type-check:watch start:dev",
     "type-check": "tsc --noEmit",
@@ -41,7 +44,10 @@ Update the package.json
 
 Use the "start" target in the npm script in vscode
 Also use the live server update
+
 ## Notes
 
 * [d3js-typescript-examples](https://github.com/Lemoncode/d3js-typescript-examples)  
 * [rotating-a-vector-in-3d-space](https://stackoverflow.com/questions/14607640/rotating-a-vector-in-3d-space)  
+* http://paperjs.org/examples/nyan-rainbow/
+* https://betterprogramming.pub/fun-with-html-canvas-lets-create-a-star-field-a46b0fed5002

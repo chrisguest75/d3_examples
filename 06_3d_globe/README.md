@@ -1,7 +1,9 @@
 # README
+
 Demonstrate how to build a 3d globe using typescript and d3
 
 ## Run it
+
 ```sh
 npm install
 npm run start
@@ -31,6 +33,7 @@ npm install @types/d3 --save-dev
 ```
 
 Update the package.json
+
 ```json
     "start": "run-p -l type-check:watch start:dev",
     "type-check": "tsc --noEmit",
@@ -41,6 +44,7 @@ Update the package.json
 
 Use the "start" target in the npm script in vscode
 Also use the live server update
+
 ## Notes
 
 * [d3js-typescript-examples](https://github.com/Lemoncode/d3js-typescript-examples)  

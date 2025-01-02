@@ -1,13 +1,13 @@
 # README
+
 Recreate the Spaceballs Demo Dancer
 
 TODO:
-* Try different rendering effects. 
-* Add mod music player
-    https://github.com/warpdesign/modplayer-js
 
+* Try different rendering effects.
+* Add mod music player https://github.com/warpdesign/modplayer-js
 
-## Creating SVG frames 
+## Creating SVG frames
 
 ```sh
 # download a video of a dancer
@@ -30,11 +30,8 @@ brew info potrace
 
 brew install gimp
 
-
-
 # open in sketchbook
 /Applications/Autodesk/SketchBook/SketchBook.app/Contents/MacOS/SketchBook ./converted_frames/headlooktest_00002.bmp 
-
 
 mkdir ./svg_frames
 
@@ -48,11 +45,10 @@ potrace --svg --output ./svg_frames/headlooktest_00001.svg ./converted_frames/he
 
 # open in chrome
 open ./svg_frames/headlooktest_00001.svg     
-
 ```
 
-
 ## Deploy to heroku
+
 ```sh
 # open heroku dashboard and create a qberted app.
 open https://dashboard.heroku.com/
