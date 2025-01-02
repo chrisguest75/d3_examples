@@ -6,7 +6,12 @@ TODO:
 * buy and sell value
 * accumulate
 * tooltips
-* Improve styles
+* Improve styles - flexbox, opacity, responsive
+* trendlines
+* Tidy up code.
+* Buy & Sell (events and value), Profit, Stock, Timeline selection
+* Filters
+* highlight regions
 
 ## Run
 
