@@ -56,7 +56,19 @@ function aggregateTrades(trades) {
 /**
  * draw trades chart
  */
-function drawChart(id, aggregated) {
+function drawChart(parent, id, aggregated, title, subtitle) {
+    d3.select(`#${parent}`) 
+    .append('div')
+    .html(`
+      <div class="px-4 py-2 mx-4 mb-5 text-center rounded-4 bg-secondary-subtle border border-secondary-subtle">
+        <div class="d-block mx-auto mb-4" id="${id}"></div>
+        <h1 class="display-5 fw-bold text-body-emphasis">${title}</h1>
+        <div class="col-lg-6 mx-auto">
+          <p class="lead mb-4">${subtitle}</p>
+        </div>
+      </div>
+    `);
+
     // Set dimensions and margins for the chart
     const margin = { top: 50, right: 80, bottom: 30, left: 50 };
     const width = 800 - margin.left - margin.right;
@@ -70,7 +82,7 @@ function drawChart(id, aggregated) {
         .range([height, 0]);
 
     // Create the SVG element and append it to the chart container
-    const svg = d3.select(id)
+    const svg = d3.select(`#${id}`)
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -234,9 +246,9 @@ function loadTable(data) {
 }
 
 
-function loadData() {
+function loadData(dataUrl) {
     // create tooltip div
-    d3.json("14_line_charts/data/trades.json").then(data1 => {
+    d3.json(dataUrl).then(data1 => {
         // Load and process the data    
         const trades = data1
         const grouped = groupTradesByDay(trades)
@@ -284,14 +296,16 @@ function loadData() {
 
         gRange.call(sliderRange);
 
+        // buys
         const buys = [];
         aggregated.forEach(d => {
             const item = { Date: parseDate(d.Date), value: d.numBuys };
             buys.push(item);
         });
         console.log(buys)
-        drawChart("#trades1", buys)
+        drawChart("charts", "trades1", buys, "Number of buys each day", "Show buy events per day")
 
+        // accumulated buys
         const accbuys = [];
         let buysValue = 0;
         aggregated.forEach(d => {
@@ -300,15 +314,15 @@ function loadData() {
             accbuys.push(item);
         });
         console.log(buys)
-        drawChart("#trades2", accbuys)
-
+        drawChart("charts", "trades2", accbuys, "Accumulated buys", "Show accumulated buy events per day")
+        
         const sells = [];
         aggregated.forEach(d => {
             const item = { Date: parseDate(d.Date), value: d.numSells };
             sells.push(item);
         });
         console.log(sells)
-        drawChart("#trades3", sells)
+        drawChart("charts", "trades3", sells, "Number of sells each day", "Show sell events per day")
 
         const accsells = [];
         let sellsValue = 0;
@@ -318,7 +332,7 @@ function loadData() {
             accsells.push(item);
         });
         console.log(buys)
-        drawChart("#trades4", accsells)
+        drawChart("charts", "trades4", accsells, "Accumulated sells", "Show accumulated sell events per day")
 
         const profit = [];
         let profitValue = 0;
@@ -328,8 +342,7 @@ function loadData() {
             profit.push(item);
         });
         console.log(profit)
-        drawChart("#trades5", profit)
-
+        drawChart("charts", "trades5", profit, "Accumulated profits", "Show accumulated profits by day")
     })
 }
 

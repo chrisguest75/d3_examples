@@ -113,7 +113,7 @@
 
 </head>
 
-<body onload="loadData()">
+<body onload="loadData('14_line_charts/data/trades.json')">
   <nav class="navbar navbar-expand-lg navbar-light bg-light static-top mb-5 shadow" style="opacity:0.3;">
     <div class="container">
       <a class="navbar-brand text-uppercase text-dark" href="#">
@@ -137,48 +137,9 @@
     </div>
   </div>
 
-  <div class="d-flex align-content-around justify-content-evenly flex-wrap">
-
-    <div class="px-4 py-2 mx-4 my-5 text-center rounded-4 bg-secondary-subtle border border-secondary-subtle">
-      <div class="d-block mx-auto mb-4" id="trades1"></div>
-      <h1 class="display-5 fw-bold text-body-emphasis">Buy</h1>
-      <div class="col-lg-6 mx-auto">
-        <p class="lead mb-4">Show buy events per day</p>
-      </div>
-    </div>
-
-    <div class="px-4 py-2 mx-4 my-5 text-center rounded-4 bg-secondary-subtle border border-secondary-subtle">
-      <div class="d-block mx-auto mb-4" id="trades2"></div>
-      <h1 class="display-5 fw-bold text-body-emphasis">Buy</h1>
-      <div class="col-lg-6 mx-auto">
-        <p class="lead mb-4">Accumulated Buys</p>
-      </div>
-    </div>
-
-    <div class="px-4 py-2 mx-4 my-5 text-center rounded-4 bg-secondary-subtle border border-secondary-subtle">
-      <div class="d-block mx-auto mb-4" id="trades3"></div>
-      <h1 class="display-5 fw-bold text-body-emphasis">Sell</h1>
-      <div class="col-lg-6 mx-auto">
-        <p class="lead mb-4">Show sell events per day</p>
-      </div>
-    </div>
-
-    <div class="px-4 py-2 mx-4 my-5 text-center rounded-4 bg-secondary-subtle border border-secondary-subtle">
-      <div class="d-block mx-auto mb-4" id="trades4"></div>
-      <h1 class="display-5 fw-bold text-body-emphasis">Sell</h1>
-      <div class="col-lg-6 mx-auto">
-        <p class="lead mb-4">Accumulated Sells</p>
-      </div>
-    </div>
-
-    <div class="px-4 py-2 mx-4 my-5 text-center rounded-4 bg-secondary-subtle border border-secondary-subtle">
-      <div class="d-block mx-auto mb-4" id="trades5"></div>
-      <h1 class="display-5 fw-bold text-body-emphasis">Profits</h1>
-      <div class="col-lg-6 mx-auto">
-        <p class="lead mb-4">Accumulated Profits</p>
-      </div>
-    </div>
+  <div id="charts" class="d-flex align-content-around justify-content-evenly flex-wrap">
   </div>
+
   <footer class="footer">
     <div class="container d-flex justify-content-between">
       <p>Chris Guest 2025©</p>

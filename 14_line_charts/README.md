@@ -11,6 +11,8 @@ TODO:
 * Filters
 * highlight regions
 * Fix loading please wait
+* horizontal tick names
+* Table key names
 
 ## Run
 
