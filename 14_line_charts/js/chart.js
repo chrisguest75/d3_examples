@@ -240,18 +240,9 @@ function createTableData(data) {
 function loadTable(data) {
     console.log(data)
 
-    $(document).ready(function () {
-        $('#details_table').bootstrapTable({
-            columns: [{
-                field: 'key',
-                title: 'Key'
-            }, {
-                field: 'value',
-                title: 'Value'
-            }],
-            data: createTableData(data)
-        })
-    })
+    const table = $('#details_table')
+    table.bootstrapTable('load', createTableData(data))
+    //table.bootstrapTable('hideLoading')
 }
 
 
@@ -260,6 +251,8 @@ function loadData(dataUrl) {
     $("[data-bs-toggle=popover]").popover();
 
     const charts = []
+    const overview = []
+    const parseDate = d3.timeParse("%Y-%m-%d");
 
     // create tooltip div
     d3.json(dataUrl).then(data1 => {
@@ -268,6 +261,7 @@ function loadData(dataUrl) {
         const grouped = groupTradesByDay(trades)
         const aggregatedTrades = aggregateTrades(trades)
         loadTable(aggregatedTrades)
+        overview.push(trades)
 
         console.log(grouped)
         const aggregated = Object.keys(grouped).map(key => {
@@ -278,8 +272,6 @@ function loadData(dataUrl) {
             }
         })
         console.log(aggregated)
-
-        const parseDate = d3.timeParse("%Y-%m-%d");
 
         const dateRange = [];
         aggregated.forEach(d => {
@@ -360,6 +352,17 @@ function loadData(dataUrl) {
         console.log(charts)
 
         sliderRange.on('onchange', val => {
+            console.log(val)
+            console.log(overview[0])
+
+            // can't filter on an object
+            /*const filteredTrades = overview[0].filter(d => parseDate(d.Date) >= val[0] && parseDate(d.Date) <= val[1]);
+            const filteredGrouped = groupTradesByDay(filteredTrades)
+            console.log(filteredGrouped)
+            const newAggregatedTrades = aggregateTrades(filteredGrouped)
+            console.log(newAggregatedTrades)
+            loadTable(newAggregatedTrades)*/
+    
             charts.forEach(chart => {
                 const { svg, x, y, aggregated, line, area } = chart;
 
@@ -401,11 +404,7 @@ function loadData(dataUrl) {
                         }));
             });
         });
-
     })
-
-
-
 }
 
 const tooltip = d3.select("body")

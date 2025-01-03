@@ -131,10 +131,18 @@
   </div>
 
   <div class="card fw-light px-4 py-2 mx-4 my-5 rounded-4 bg-secondary-subtle border border-secondary-subtle">
-    <div class="card-body ">
-      <table id="details_table" class="table table-borderless mx-1 my-1">
-      </table>
-    </div>
+    <table
+    id="details_table"
+    data-toggle="table"
+    class="table table-borderless"
+  >
+    <thead>
+      <tr>
+        <th data-field="key">Key</th>
+        <th data-field="value">Value</th>
+      </tr>
+    </thead>
+  </table>
   </div>
 
   <div id="charts" class="d-flex align-content-around justify-content-evenly flex-wrap">

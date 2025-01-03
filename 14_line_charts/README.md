@@ -20,3 +20,4 @@ Use live server in git root.
 * datavizdad/d3areachartseries [here](https://github.com/datavizdad/d3areachartseries/tree/main)
 * https://jquery.com/
 * https://www.npmjs.com/package/d3-simple-slider
+* https://bootstrap-table.com/
